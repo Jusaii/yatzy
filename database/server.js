@@ -1,6 +1,7 @@
 import express from 'express';
-import { addResult } from './database.js';
+import { addResult, showResults } from './database.js';
 import cors from 'cors';
+const PORT = 3000;
 const app = express();
 app.use(express.json());
 
@@ -17,8 +18,17 @@ app.post('/api/save-score', async (req, res) => {
   }
 });
 
+app.get('/api/load-scores', async (req, res) => {
+  try {
+    const result = await showResults();
+    res.set('Cache-Control', 'no-store');
+    res.json({ success: true, result });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Start the server and log a message
-const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

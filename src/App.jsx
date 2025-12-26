@@ -6,6 +6,7 @@ import Scoreboard from './scoreboard'
 import { useState } from 'react'
 import './App.css'
 
+
 const Total = () => {
   if (subTotal < 63) {
     return subTotal + total
@@ -14,15 +15,19 @@ const Total = () => {
   )
 }
 
+
 const App = () => {
   const [nameIsSet, setNameIsSet] = useState(false);
   const [name, setName] = useState('');
   const [values, setValues] = useState([0, 0, 0, 0, 0]);
   const [locked, setLocked] = useState([false, false, false, false, false])
   const [roundNum, setRoundNum] = useState(0);
+  const [showLb, setShowLb] = useState(false);
+  const [lbScores, setLbScores] = useState([]);
 
+
+  const backendPort = 3000; // Node server port
   function saveScore() {
-    const backendPort = 3000; // Node server port
     const apiUrl = `${window.location.protocol}//${window.location.hostname}:${backendPort}/api/save-score`;
     const totalNum = Number(Total());
     fetch(apiUrl, {
@@ -30,6 +35,33 @@ const App = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, score: totalNum }),
     });
+  }
+
+  async function loadLb() {
+    const apiUrl = `${window.location.protocol}//${window.location.hostname}:${backendPort}/api/load-scores`;
+
+    try {
+      // await the fetch call
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      // await the JSON parsing
+      const data = await response.json();
+
+      if (data.success) {
+        setLbScores(data.result); // array of scores from server
+      } else {
+        console.error('Failed to load scores:', data.error);
+      }
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+    }
   }
 
   const handleRoll = (index) => {
@@ -121,12 +153,17 @@ const App = () => {
     )
   }
 
-  const handleRestart = () => {
+  const restartGame = () => {
     window.location.reload()
   }
 
-  const handleStart = () => {
+  const startGame = () => {
     setNameIsSet(true)
+  }
+
+  const showLeaderBoard = () => {
+    setNameIsSet(true)
+    setShowLb(true)
   }
 
   // Ask for name before game starts
@@ -147,7 +184,48 @@ const App = () => {
             </tr>
             <tr>
               <td className="gameover-table">
-                <Button handleClick={handleStart} text="Start game" className="gameover-buttons" />
+                <Button handleClick={startGame} text="Start game" className="gameover-buttons" />
+              </td>
+            </tr>
+            <tr>
+              <td className="gameover-table">
+                <Button handleClick={showLeaderBoard} text="Show leaderboard" className="gameover-buttons" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
+  // Show leaderboard
+  if (showLb) {
+    loadLb()
+  }
+  while (showLb) {
+    return (
+      <div>
+        <table className="gameover-table">
+          <tbody>
+            <tr>
+              <td className="gameover-table">
+                <p className="gameover-text">Leaderboard top 10 scores</p>
+              </td>
+            </tr>
+            <tr>
+              <td className="gameover-table">
+                <ul>
+                  {lbScores.map((score, index) => (
+                    <li key={index}>
+                      {score.name}: {score.score}
+                    </li>
+                  ))}
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td className="gameover-table">
+                <Button handleClick={restartGame} text='Back' className="gameover-buttons" />
               </td>
             </tr>
           </tbody>
@@ -188,7 +266,7 @@ const App = () => {
           name={name}
         />
 
-        <Button handleClick={handleRestart} text='Restart game' className="restart-container" />
+        <Button handleClick={restartGame} text='Restart game' className="restart-container" />
       </div>
     );
   }
@@ -213,7 +291,12 @@ const App = () => {
           </tr>
           <tr>
             <td className="gameover-table">
-              <Button handleClick={handleRestart} text='Restart game' className="gameover-buttons" />
+              <Button handleClick={restartGame} text='Restart game' className="gameover-buttons" />
+            </td>
+          </tr>
+          <tr>
+            <td className="gameover-table">
+              <Button handleClick={showLeaderBoard} text="Show leaderboard" className="gameover-buttons" />
             </td>
           </tr>
         </tbody>
