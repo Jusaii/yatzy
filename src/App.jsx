@@ -1,0 +1,225 @@
+import { total, subTotal } from "./totals";
+import Button from './buttons/button'
+import Button2 from './buttons/button2'
+import Dicepics from './dicepics'
+import Scoreboard from './scoreboard'
+import { useState } from 'react'
+import './App.css'
+
+const Total = () => {
+  if (subTotal < 63) {
+    return subTotal + total
+  } else return (
+    subTotal + 50 + total
+  )
+}
+
+const App = () => {
+  const [nameIsSet, setNameIsSet] = useState(false);
+  const [name, setName] = useState('');
+  const [values, setValues] = useState([0, 0, 0, 0, 0]);
+  const [locked, setLocked] = useState([false, false, false, false, false])
+  const [roundNum, setRoundNum] = useState(0);
+
+  function saveScore() {
+    const backendPort = 3000; // Node server port
+    const apiUrl = `${window.location.protocol}//${window.location.hostname}:${backendPort}/api/save-score`;
+    const totalNum = Number(Total());
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, score: totalNum }),
+    });
+  }
+
+  const handleRoll = (index) => {
+    if (locked[index]) {
+      return;
+    }
+
+    const newValue = Math.floor(Math.random() * 6) + 1;
+    const newValues = [...values];
+    newValues[index] = newValue;
+    setValues(newValues);
+  };
+
+  const handleLock = (index) => {
+    setLocked(prevLocked => prevLocked.map((lock, i) => i === index ? !lock : lock));
+  };
+
+  const rollDice = [() =>
+    handleRoll(0), () =>
+    handleRoll(1), () =>
+    handleRoll(2), () =>
+    handleRoll(3), () =>
+    handleRoll(4),
+  ];
+
+  const [rollCount, setRollCount] = useState(0);
+
+  const handleFullRoll = () => {
+
+    const newValues = [...values];
+    let rolled = false;
+
+    do {
+      rolled = false;
+      for (let i = 0; i < newValues.length; i++) {
+        if (!locked[i]) {
+          const newValue = Math.floor(Math.random() * 6) + 1;
+          if (newValue !== newValues[i]) {
+            newValues[i] = newValue;
+            rolled = true;
+          }
+        }
+      }
+    } while (rolled);
+
+    setValues(newValues);
+  }
+
+  const handleRolling = () => {
+
+    if (rollCount >= 3) {
+      return;
+    }
+
+    const handleDelay = () => {
+      handleFullRoll()
+      setTimeout(handleFullRoll, 200)
+      setTimeout(handleFullRoll, 400)
+      setTimeout(handleFullRoll, 600)
+      setTimeout(handleFullRoll, 800)
+      setTimeout(handleFullRoll, 1000)
+    };
+
+    handleDelay();
+    setRollCount(prevCount => prevCount + 1);
+  };
+
+  const handleReset = () => {
+    setValues([0, 0, 0, 0, 0])
+    setLocked([false, false, false, false, false])
+    setRollCount(0)
+    setRoundNum(roundNum + 1)
+  }
+
+  const RollsLeft = () => {
+    const rolls = 3 - rollCount
+    if (rollCount === 0) {
+      return (
+        <p>Roll the dice</p>
+      )
+    }
+    if (rolls === 0) {
+      return (
+        <p>No more rolls left!</p>
+      )
+    }
+    return (
+      <p>Roll the dice ({rolls} rolls left)</p>
+    )
+  }
+
+  const handleRestart = () => {
+    window.location.reload()
+  }
+
+  const handleStart = () => {
+    setNameIsSet(true)
+  }
+
+  // Ask for name before game starts
+  while (nameIsSet != true) {
+    return (
+      <div className="gameover-table">
+        <table className="gameover-table">
+          <tbody>
+            <tr>
+              <td className="gameover-table">
+                <p className="gameover-text">Enter your name</p>
+              </td>
+            </tr>
+            <tr>
+              <td className="gameover-table">
+                <input onChange={e => setName(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td className="gameover-table">
+                <Button handleClick={handleStart} text="Start game" className="gameover-buttons" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
+  // Main game ui
+  while (roundNum < 15) {
+    return (
+      <div>
+        <Button handleClick={handleRolling} text={<RollsLeft />} className="rollbtn-container" />
+
+        {values.map((value, i) => (
+          <div className='dice-container' key={i}>
+            <Dicepics
+              value={value}
+              dicepic0={<Button2 handleClick={() => handleLock(i)} text={<div className='dice0'></div>} />}
+              dicepic1={<Button2 handleClick={() => handleLock(i)} text={<div className='dice1'></div>} />}
+              dicepic2={<Button2 handleClick={() => handleLock(i)} text={<div className='dice2'></div>} />}
+              dicepic3={<Button2 handleClick={() => handleLock(i)} text={<div className='dice3'></div>} />}
+              dicepic4={<Button2 handleClick={() => handleLock(i)} text={<div className='dice4'></div>} />}
+              dicepic5={<Button2 handleClick={() => handleLock(i)} text={<div className='dice5'></div>} />}
+              dicepic6={<Button2 handleClick={() => handleLock(i)} text={<div className='dice6'></div>} />}
+              handleRoll={rollDice[i]}
+              locked={locked[i]}
+            />
+            <div className='lock'>
+              <Button2 handleClick={() => handleLock(i)} text={locked[i] ? <div className='locked'></div> : <div className='unlocked'></div>} />
+            </div>
+          </div>
+        ))}
+
+        <Scoreboard
+          values={[values[0], values[1], values[2], values[3], values[4]]}
+          reset={handleReset}
+          name={name}
+        />
+
+        <Button handleClick={handleRestart} text='Restart game' className="restart-container" />
+      </div>
+    );
+  }
+
+  // End of game screen
+  saveScore()
+  return (
+    <div>
+      <table className="gameover-table">
+        <tbody>
+          <tr>
+            <td className="gameover-table">
+              <p className="gameover-text">Game Over!</p>
+            </td>
+          </tr>
+          <tr>
+            <td className="gameover-table">
+              <p className="gameover-text">Final score: <Total /></p>
+            </td>
+          </tr>
+          <tr>
+          </tr>
+          <tr>
+            <td className="gameover-table">
+              <Button handleClick={handleRestart} text='Restart game' className="gameover-buttons" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+export default App
