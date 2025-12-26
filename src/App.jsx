@@ -27,7 +27,9 @@ const App = () => {
 
 
   const backendPort = 3000; // Node server port
+
   function saveScore() {
+    console.log('saving scores')
     const apiUrl = `${window.location.protocol}//${window.location.hostname}:${backendPort}/api/save-score`;
     const totalNum = Number(Total());
     fetch(apiUrl, {
@@ -38,10 +40,10 @@ const App = () => {
   }
 
   async function loadLb() {
+    console.log('fetching leaderboard')
     const apiUrl = `${window.location.protocol}//${window.location.hostname}:${backendPort}/api/load-scores`;
 
     try {
-      // await the fetch call
       const response = await fetch(apiUrl, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -51,11 +53,10 @@ const App = () => {
         throw new Error(`Server error: ${response.status}`);
       }
 
-      // await the JSON parsing
       const data = await response.json();
 
       if (data.success) {
-        setLbScores(data.result); // array of scores from server
+        setLbScores(data.result);
       } else {
         console.error('Failed to load scores:', data.error);
       }
@@ -162,6 +163,7 @@ const App = () => {
   }
 
   const showLeaderBoard = () => {
+    loadLb()
     setNameIsSet(true)
     setShowLb(true)
   }
@@ -198,10 +200,6 @@ const App = () => {
     )
   }
 
-  // Show leaderboard
-  if (showLb) {
-    loadLb()
-  }
   while (showLb) {
     return (
       <div>
