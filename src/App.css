@@ -15,10 +15,12 @@ body {
 
 .leaderboard-table {
     text-align: center; /* centers content inside the <td> */
+    color: white;
     border: none;
 }
 
 .leaderboard-table ul {
+    color: white;
     list-style: none; /* remove bullets */
     padding-left: 0;   /* remove default padding */
     margin: 0;         /* remove default margin */
@@ -27,6 +29,7 @@ body {
 }
 
 .leaderboard-table li {
+    color: white;
     margin: 4px 0; /* optional spacing */
     border: none;
 }
