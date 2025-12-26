@@ -137,16 +137,11 @@ body {
     text-shadow: -1px 1px 0 #000, 1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000;
 }
 
-.lock {
-    margin-left: 5px;
-}
-
 .scoreboard-container {
     color: rgb(190, 190, 190);
     background-color: rgb(100, 100, 100);
     border: 10px double rgb(100, 100, 100);
     margin: auto;
-    margin-top: -1rem;
 }
 
 .scoreboard1-container {
@@ -354,16 +349,12 @@ td img {
 }
 
 .locked {
+    display: flex;
+    align-items: center;
     background-image: url('./images/locked.png');
     background-size: cover;
     height: 40px;
     width: 40px;
     margin-top: -4.5rem;
-}
-
-.unlocked {
-    background-size: cover;
-    height: 40px;
-    width: 40px;
-    margin-top: -4.5rem;
+    margin-left: 25px;
 }

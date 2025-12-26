@@ -1,11 +1,20 @@
 import { total, subTotal } from "./totals";
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
-import Dicepics from './dicepics'
 import Scoreboard from './scoreboard'
 import { useState } from 'react'
 import './App.css'
 const DBPORT = 3000; // Node server port
+
+const diceImages = new Map([
+  [0, 'dice0'],
+  [1, 'dice1'],
+  [2, 'dice2'],
+  [3, 'dice3'],
+  [4, 'dice4'],
+  [5, 'dice5'],
+  [6, 'dice6'],
+]);
 
 const Total = () => {
   if (subTotal < 63) {
@@ -66,29 +75,9 @@ const App = () => {
     }
   }
 
-  const handleRoll = (index) => {
-    if (locked[index]) {
-      return;
-    }
-
-    const newValue = Math.floor(Math.random() * 6) + 1;
-    const newValues = [...values];
-    newValues[index] = newValue;
-    setValues(newValues);
-  };
-
   const handleLock = (index) => {
     setLocked(prevLocked => prevLocked.map((lock, i) => i === index ? !lock : lock));
   };
-
-  const rollDice = [() =>
-    handleRoll(0), () =>
-    handleRoll(1), () =>
-    handleRoll(2), () =>
-    handleRoll(3), () =>
-    handleRoll(4),
-  ];
-
 
   const handleFullRoll = () => {
 
@@ -237,21 +226,8 @@ const App = () => {
 
         {values.map((value, i) => (
           <div className='dice-container' key={i}>
-            <Dicepics
-              value={value}
-              dicepic0={<Button2 handleClick={() => handleLock(i)} text={<div className='dice0'></div>} />}
-              dicepic1={<Button2 handleClick={() => handleLock(i)} text={<div className='dice1'></div>} />}
-              dicepic2={<Button2 handleClick={() => handleLock(i)} text={<div className='dice2'></div>} />}
-              dicepic3={<Button2 handleClick={() => handleLock(i)} text={<div className='dice3'></div>} />}
-              dicepic4={<Button2 handleClick={() => handleLock(i)} text={<div className='dice4'></div>} />}
-              dicepic5={<Button2 handleClick={() => handleLock(i)} text={<div className='dice5'></div>} />}
-              dicepic6={<Button2 handleClick={() => handleLock(i)} text={<div className='dice6'></div>} />}
-              handleRoll={rollDice[i]}
-              locked={locked[i]}
-            />
-            <div className='lock'>
-              <Button2 handleClick={() => handleLock(i)} text={locked[i] ? <div className='locked'></div> : <div className='unlocked'></div>} />
-            </div>
+            {<Button2 handleClick={() => handleLock(i)} text={<div className={diceImages.get(value)}></div>} />}
+            <div className={locked[i] ? 'locked' : null} />
           </div>
         ))}
 
