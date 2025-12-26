@@ -30,10 +30,6 @@ const Scoreboard = (props) => {
         <table className="scoreboard-container">
             <tbody className="scoreboard1-container">
                 <tr>
-                    <td></td>
-                    <td>{props.name}</td>
-                </tr>
-                <tr>
                     <td>{<div className='dices1'></div>}</td>
                     <td><Numberbuttons
                         target={1}
@@ -174,7 +170,7 @@ const Scoreboard = (props) => {
             </tbody>
             <tbody className="scoreboard4-container">
                 <tr>
-                    <td>Total</td>
+                    <td>{props.name}</td>
                     <td><Total /></td>
                 </tr>
             </tbody>
