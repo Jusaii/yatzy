@@ -17,12 +17,12 @@ body {
 
 .leaderboard-table {
     text-align: center;
-    color: white;
+    color: rgb(190, 190, 190);
     border: none;
 }
 
 .leaderboard-table ul {
-    color: white;
+    color: rgb(190, 190, 190);
     list-style: none;
     padding-left: 0;
     margin: 10px;
@@ -31,7 +31,7 @@ body {
 }
 
 .leaderboard-table li {
-    color: white;
+    color: rgb(190, 190, 190);
     margin: 4px 0;
     border: none;
 }
@@ -60,7 +60,7 @@ body {
 
     height: 2rem;
     font-size: 1.5rem;
-    color: rgb(245, 245, 245);
+    color: rgb(190, 190, 190);
 }
 
 .gameover-buttons {
@@ -75,7 +75,7 @@ body {
     height: 2rem;
     border: solid 2px;
     border-radius: 0.5rem;
-    border-color: black;
+    border-color: rgb(100, 100, 100);
     background-color: rgba(50, 50, 50, 0.75);
 
     font-size: 1.5rem;
@@ -100,10 +100,10 @@ body {
     height: 2.5rem;
     border: none;
     border-radius: 0.5rem;
-    background-color: rgba(100, 100, 100, 0.75);
 
+    color: rgb(190, 190, 190);
+    background-color: rgba(50, 50, 50, 0.75);
     font-size: 1.5rem;
-    color: white;
 }
 
 .restart-container {
@@ -141,33 +141,33 @@ body {
 }
 
 .scoreboard-container {
-    color: black;
+    color: rgb(190, 190, 190);
     background-color: rgb(100, 100, 100);
     border: 10px double rgb(100, 100, 100);
     margin: auto;
 }
 
 .scoreboard1-container {
-    color: black;
-    background-color: white;
+    color: rgb(190, 190, 190);
+    background-color: rgb(30, 30, 30);
     border: 2px solid rgb(100, 100, 100);
 }
 
 .scoreboard2-container {
-    color: black;
-    background-color: white;
+    color: rgb(190, 190, 190);
+    background-color: rgb(30, 30, 30);
     border: 2px solid rgb(100, 100, 100);
 }
 
 .scoreboard3-container {
-    color: black;
-    background-color: white;
+    color: rgb(190, 190, 190);
+    background-color: rgb(30, 30, 30);
     border: 2px solid rgb(100, 100, 100);
 }
 
 .scoreboard4-container {
-    color: black;
-    background-color: white;
+    color: rgb(190, 190, 190);
+    background-color: rgb(30, 30, 30);
     border: 2px solid rgb(100, 100, 100);
 }
 
@@ -191,7 +191,7 @@ td img {
 }
 
 .select-container {
-    color: black;
+    color: rgb(190, 190, 190);
     border: none;
     background: none;
     font-size: 1.1rem;
