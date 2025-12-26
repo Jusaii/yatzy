@@ -14,18 +14,21 @@ body {
 }
 
 .leaderboard-table {
-  text-align: center; /* centers content inside the <td> */
+    text-align: center; /* centers content inside the <td> */
+    border: none;
 }
 
 .leaderboard-table ul {
-  list-style: none; /* remove bullets */
-  padding-left: 0;   /* remove default padding */
-  margin: 0;         /* remove default margin */
-  display: inline-block; /* shrink to content width so it centers properly */
+    list-style: none; /* remove bullets */
+    padding-left: 0;   /* remove default padding */
+    margin: 0;         /* remove default margin */
+    display: inline-block; /* shrink to content width so it centers properly */
+    border: none;
 }
 
 .leaderboard-table li {
-  margin: 4px 0; /* optional spacing */
+    margin: 4px 0; /* optional spacing */
+    border: none;
 }
 
 .gameover-text {

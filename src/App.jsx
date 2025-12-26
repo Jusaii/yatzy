@@ -5,7 +5,7 @@ import Dicepics from './dicepics'
 import Scoreboard from './scoreboard'
 import { useState } from 'react'
 import './App.css'
-
+const DBPORT = 3000; // Node server port
 
 const Total = () => {
   if (subTotal < 63) {
@@ -15,6 +15,20 @@ const Total = () => {
   )
 }
 
+function restartGame() {
+  window.location.reload()
+}
+
+function saveScore(name) {
+  console.log('Saving scores')
+  const apiUrl = `${window.location.protocol}//${window.location.hostname}:${DBPORT}/api/save-score`;
+  const totalNum = Number(Total());
+  fetch(apiUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, score: totalNum }),
+  });
+}
 
 const App = () => {
   const [nameIsSet, setNameIsSet] = useState(false);
@@ -24,24 +38,11 @@ const App = () => {
   const [roundNum, setRoundNum] = useState(0);
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
-
-
-  const backendPort = 3000; // Node server port
-
-  function saveScore() {
-    console.log('saving scores')
-    const apiUrl = `${window.location.protocol}//${window.location.hostname}:${backendPort}/api/save-score`;
-    const totalNum = Number(Total());
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, score: totalNum }),
-    });
-  }
+  const [rollCount, setRollCount] = useState(0);
 
   async function loadLb() {
-    console.log('fetching leaderboard')
-    const apiUrl = `${window.location.protocol}//${window.location.hostname}:${backendPort}/api/load-scores`;
+    console.log('Fetching leaderboard')
+    const apiUrl = `${window.location.protocol}//${window.location.hostname}:${DBPORT}/api/load-scores`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -88,7 +89,6 @@ const App = () => {
     handleRoll(4),
   ];
 
-  const [rollCount, setRollCount] = useState(0);
 
   const handleFullRoll = () => {
 
@@ -154,9 +154,6 @@ const App = () => {
     )
   }
 
-  const restartGame = () => {
-    window.location.reload()
-  }
 
   const startGame = () => {
     setNameIsSet(true)
@@ -169,7 +166,7 @@ const App = () => {
   }
 
   // Ask for name before game starts
-  while (nameIsSet != true) {
+  if (!nameIsSet) {
     return (
       <div className="gameover-table">
         <table className="gameover-table">
@@ -200,14 +197,14 @@ const App = () => {
     )
   }
 
-  while (showLb) {
+  if (showLb) {
     return (
       <div>
         <table className="gameover-table">
           <tbody>
             <tr>
               <td className="gameover-table">
-                <p className="gameover-text">Leaderboard top 10 scores</p>
+                <p className="gameover-text">Top 10 scores</p>
               </td>
             </tr>
             <tr>
@@ -233,7 +230,7 @@ const App = () => {
   }
 
   // Main game ui
-  while (roundNum < 15) {
+  if (roundNum < 15) {
     return (
       <div>
         <Button handleClick={handleRolling} text={<RollsLeft />} className="rollbtn-container" />
@@ -270,7 +267,7 @@ const App = () => {
   }
 
   // End of game screen
-  saveScore()
+  saveScore(name)
   return (
     <div>
       <table className="gameover-table">
