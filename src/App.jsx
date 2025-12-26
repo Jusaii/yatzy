@@ -213,11 +213,11 @@ const App = () => {
               </td>
             </tr>
             <tr>
-              <td className="gameover-table">
+              <td className="leaderboard-table">
                 <ul>
                   {lbScores.map((score, index) => (
                     <li key={index}>
-                      {score.name}: {score.score}
+                      {index + 1}. {score.name}: {score.score}
                     </li>
                   ))}
                 </ul>

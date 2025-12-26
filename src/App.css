@@ -13,6 +13,21 @@ body {
     border: none;
 }
 
+.leaderboard-table {
+  text-align: center; /* centers content inside the <td> */
+}
+
+.leaderboard-table ul {
+  list-style: none; /* remove bullets */
+  padding-left: 0;   /* remove default padding */
+  margin: 0;         /* remove default margin */
+  display: inline-block; /* shrink to content width so it centers properly */
+}
+
+.leaderboard-table li {
+  margin: 4px 0; /* optional spacing */
+}
+
 .gameover-text {
     display: flex;
     align-items: center;
