@@ -8,29 +8,36 @@ body {
 
 }
 
-.gameover-table {
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
+.nameinput-box {
+    width: 10rem;
+    height: 2rem;
+    text-align: center;
+    font-size: 1.5rem;
 }
 
 .leaderboard-table {
-    text-align: center; /* centers content inside the <td> */
+    text-align: center;
     color: white;
     border: none;
 }
 
 .leaderboard-table ul {
     color: white;
-    list-style: none; /* remove bullets */
-    padding-left: 0;   /* remove default padding */
-    margin: 0;         /* remove default margin */
-    display: inline-block; /* shrink to content width so it centers properly */
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: inline-block;
     border: none;
 }
 
 .leaderboard-table li {
     color: white;
-    margin: 4px 0; /* optional spacing */
+    margin: 4px 0;
+    border: none;
+}
+
+.gameover-table {
+    background-color: rgba(0, 0, 0, 0);
     border: none;
 }
 

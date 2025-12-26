@@ -178,7 +178,7 @@ const App = () => {
             </tr>
             <tr>
               <td className="gameover-table">
-                <input onChange={e => setName(e.target.value)} />
+                <input onChange={e => setName(e.target.value)} className="nameinput-box" />
               </td>
             </tr>
             <tr>
