@@ -25,7 +25,7 @@ body {
     color: white;
     list-style: none;
     padding-left: 0;
-    margin: 0;
+    margin: 10px;
     display: inline-block;
     border: none;
 }
@@ -36,9 +36,17 @@ body {
     border: none;
 }
 
+.leaderboard-screen {
+    background-color: rgba(30, 30, 30, 1);
+    border-radius: 0.5rem;
+    border: 10px double rgb(100, 100, 100);
+}
+
 .gameover-table {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(30, 30, 30, 1);
     border: none;
+    border-radius: 0.5rem;
+    margin: 10px;
 }
 
 .gameover-text {

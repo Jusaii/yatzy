@@ -200,10 +200,10 @@ const App = () => {
   if (showLb) {
     return (
       <div>
-        <table className="gameover-table">
+        <table className="leaderboard-screen">
           <tbody>
             <tr>
-              <td className="gameover-table">
+              <td className="leaderboard-screen">
                 <p className="gameover-text">Top 10 scores</p>
               </td>
             </tr>
@@ -219,7 +219,7 @@ const App = () => {
               </td>
             </tr>
             <tr>
-              <td className="gameover-table">
+              <td className="leaderboard-screen">
                 <Button handleClick={restartGame} text='Back' className="gameover-buttons" />
               </td>
             </tr>
