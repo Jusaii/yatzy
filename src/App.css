@@ -146,6 +146,7 @@ body {
     background-color: rgb(100, 100, 100);
     border: 10px double rgb(100, 100, 100);
     margin: auto;
+    margin-top: -1rem;
 }
 
 .scoreboard1-container {
@@ -357,11 +358,12 @@ td img {
     background-size: cover;
     height: 40px;
     width: 40px;
+    margin-top: -4.5rem;
 }
 
 .unlocked {
-    background-image: url('./images/unlocked.png');
     background-size: cover;
     height: 40px;
     width: 40px;
+    margin-top: -4.5rem;
 }
