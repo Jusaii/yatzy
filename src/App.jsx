@@ -127,20 +127,7 @@ const App = () => {
   }
 
   const RollsLeft = () => {
-    const rolls = 3 - rollCount
-    if (rollCount === 0) {
-      return (
-        <p>Roll the dice</p>
-      )
-    }
-    if (rolls === 0) {
-      return (
-        <p>No more rolls left!</p>
-      )
-    }
-    return (
-      <p>Roll the dice ({rolls} rolls left)</p>
-    )
+    return 3 - rollCount
   }
 
 
@@ -222,22 +209,32 @@ const App = () => {
   if (roundNum < 15) {
     return (
       <div>
-        <Button handleClick={handleRolling} text={<RollsLeft />} className="rollbtn-container" />
+        <table className="scoreboard-table">
+          <tbody>
+            <tr>
+              <td className="scoreboard-table">
+                <Scoreboard
+                  values={[values[0], values[1], values[2], values[3], values[4]]}
+                  reset={handleReset}
+                  name={name}
+                />
 
-        {values.map((value, i) => (
-          <div className='dice-container' key={i}>
-            {<Button2 handleClick={() => handleLock(i)} text={<div className={diceImages.get(value)}></div>} />}
-            <div className={locked[i] ? 'locked' : null} />
-          </div>
-        ))}
+                <Button handleClick={restartGame} text='Restart game' className="restart-container" />
+              </td>
+              <td className="scoreboard-table">
+                <p className="gameover-text"><RollsLeft /></p>
+                <Button handleClick={handleRolling} text='Roll' className="rollbtn-container" />
 
-        <Scoreboard
-          values={[values[0], values[1], values[2], values[3], values[4]]}
-          reset={handleReset}
-          name={name}
-        />
-
-        <Button handleClick={restartGame} text='Restart game' className="restart-container" />
+                {values.map((value, i) => (
+                  <div className='dice-container' key={i}>
+                    {<Button2 handleClick={() => handleLock(i)} text={<div className={diceImages.get(value)}></div>} />}
+                    <div className={locked[i] ? 'locked' : null} />
+                  </div>
+                ))}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }
