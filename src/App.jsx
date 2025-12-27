@@ -75,47 +75,37 @@ const App = () => {
     }
   }
 
-  const handleLock = (index) => {
+  const toggleLock = (index) => {
     setLocked(prevLocked => prevLocked.map((lock, i) => i === index ? !lock : lock));
   };
 
-  const handleFullRoll = () => {
-
+  const rollAllOnce = () => {
     const newValues = [...values];
-    let rolled = false;
 
-    do {
-      rolled = false;
-      for (let i = 0; i < newValues.length; i++) {
-        if (!locked[i]) {
-          const newValue = Math.floor(Math.random() * 6) + 1;
-          if (newValue !== newValues[i]) {
-            newValues[i] = newValue;
-            rolled = true;
-          }
+    for (let i = 0; i < newValues.length; i++) {
+      if (!locked[i]) {
+        console.log(`${i + 1} was rolled`)
+        const newValue = Math.floor(Math.random() * 6) + 1;
+        if (newValue !== newValues[i]) {
+          newValues[i] = newValue;
         }
       }
-    } while (rolled);
-
+    }
     setValues(newValues);
   }
 
-  const handleRolling = () => {
-
+  const rollDice = () => {
     if (rollCount >= 3) {
       return;
     }
 
-    const handleDelay = () => {
-      handleFullRoll()
-      setTimeout(handleFullRoll, 200)
-      setTimeout(handleFullRoll, 400)
-      setTimeout(handleFullRoll, 600)
-      setTimeout(handleFullRoll, 800)
-      setTimeout(handleFullRoll, 1000)
-    };
+    rollAllOnce()
+    setTimeout(rollAllOnce, 200)
+    setTimeout(rollAllOnce, 400)
+    setTimeout(rollAllOnce, 600)
+    setTimeout(rollAllOnce, 800)
+    setTimeout(rollAllOnce, 1000)
 
-    handleDelay();
     setRollCount(prevCount => prevCount + 1);
   };
 
@@ -223,11 +213,11 @@ const App = () => {
               </td>
               <td className="scoreboard-table">
                 <p className="gameover-text"><RollsLeft /></p>
-                <Button handleClick={handleRolling} text='Roll' className="rollbtn-container" />
+                <Button handleClick={rollDice} text='Roll' className="rollbtn-container" />
 
                 {values.map((value, i) => (
                   <div className='dice-container' key={i}>
-                    {<Button2 handleClick={() => handleLock(i)} text={<div className={diceImages.get(value)}></div>} />}
+                    {<Button2 handleClick={() => toggleLock(i)} text={<div className={diceImages.get(value)}></div>} />}
                     <div className={locked[i] ? 'locked' : null} />
                   </div>
                 ))}

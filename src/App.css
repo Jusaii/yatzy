@@ -145,7 +145,8 @@ body {
 
 
 .scoreboard-table {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(30, 30, 30, 0.4);
+    border-radius: 0.5rem;
     border: none;
 }
 
