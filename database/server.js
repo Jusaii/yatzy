@@ -9,9 +9,9 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/api/save-score', async (req, res) => {
-  const { name, score, id } = req.body;
+  const { name, score } = req.body;
   try {
-    const result = await addResult(name, score, id);
+    const result = await addResult(name, score);
     res.json({ success: true, result });
   } catch (e) {
     res.status(500).json({ error: e.message });

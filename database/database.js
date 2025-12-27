@@ -11,11 +11,11 @@ const pool = new Pool({
 });
 
 
-export const addResult = (name, score, id) => {
+export const addResult = (name, score) => {
   return new Promise(function(resolve, reject) {
     pool.query(
-      "INSERT INTO results(name, score, id) VALUES($1, $2, $3);",
-      [name, score, id],
+      "INSERT INTO results(name, score) VALUES($1, $2);",
+      [name, score],
       (error, results) => {
         if (error) {
           reject(error);

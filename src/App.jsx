@@ -5,7 +5,6 @@ import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { Total, Scoreboard } from './scoreboard'
 import { useState } from 'react'
-import { useCookies } from 'react-cookie'
 import './App.css'
 
 function refreshValues(newValues) {
@@ -25,13 +24,6 @@ const App = () => {
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
-  const [cookies, setCookie] = useCookies(['user'])
-
-  function CreateCookie() {
-    const newKey = crypto.randomUUID();
-    setCookie('user', newKey, { path: '/' })
-    console.log(`cookie created: ${cookies.user}`)
-  }
 
   function restartGame() {
     setNameIsSet(false)
@@ -99,7 +91,6 @@ const App = () => {
 
   function startGame() {
     setNameIsSet(true)
-    cookies.user ? console.log(`cookie exists: ${cookies.user}`) : CreateCookie()
   }
 
   function showLeaderBoard() {
@@ -212,7 +203,7 @@ const App = () => {
   }
 
   // End of game screen
-  saveScore(name, Number(Total()), cookies.user)
+  saveScore(name, Number(Total()))
   return (
     <div>
       <table className="gameover-table">
