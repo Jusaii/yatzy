@@ -30,7 +30,6 @@ const App = () => {
   function CreateCookie() {
     const newKey = crypto.randomUUID();
     setCookie('user', newKey, { path: '/' })
-    console.log(`cookie created: ${cookies.user}`)
   }
 
   function restartGame() {
@@ -111,7 +110,7 @@ const App = () => {
   if (!nameIsSet) {
     return (
       <div className="gameover-table">
-        {cookies.user ? console.log(`cookie exists: ${cookies.user}`) : <CreateCookie />}
+        {cookies.user ? null : <CreateCookie />}
         <table className="gameover-table">
           <tbody>
             <tr>
