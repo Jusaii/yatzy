@@ -27,10 +27,6 @@ const App = () => {
   const [rollCount, setRollCount] = useState(0);
   const [cookies, setCookie] = useCookies(['user'])
 
-  function CreateCookie() {
-    const newKey = crypto.randomUUID();
-    setCookie('user', newKey, { path: '/' })
-  }
 
   function restartGame() {
     setNameIsSet(false)
@@ -98,6 +94,14 @@ const App = () => {
 
   function startGame() {
     setNameIsSet(true)
+    useEffect(() => {
+      if (!cookies.user) {
+        const newKey = crypto.randomUUID();
+        setCookie('user', newKey, { path: '/' });
+      }
+    }, [cookies.user]);
+    console.log(cookies.user)
+    console.log('cookies.user')
   }
 
   function showLeaderBoard() {
@@ -110,7 +114,6 @@ const App = () => {
   if (!nameIsSet) {
     return (
       <div className="gameover-table">
-        {cookies.user ? console.log(`cookie exists: ${cookies.user}`) : <CreateCookie />}
         <table className="gameover-table">
           <tbody>
             <tr>
