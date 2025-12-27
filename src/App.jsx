@@ -110,7 +110,7 @@ const App = () => {
   if (!nameIsSet) {
     return (
       <div className="gameover-table">
-        {cookies.user ? null : <CreateCookie />}
+        {cookies.user ? console.log(`cookie exists: ${cookies.user}`) : <CreateCookie />}
         <table className="gameover-table">
           <tbody>
             <tr>
