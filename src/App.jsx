@@ -1,23 +1,12 @@
 import { saveScore, loadLb } from './dbfetch'
-import { total, subTotal, updateTotal, resetTotal, resetSubTotal } from "./totals";
+import { resetTotal, resetSubTotal } from "./totals";
+import { values, startValues, startLockMap, diceImages } from './valuemaps'
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { Total, Scoreboard } from './scoreboard'
 import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 import './App.css'
-
-const values = new Map([[1, 0], [2, 0], [3, 0], [4, 0], [5, 0],]);
-const startLockMap = new Map([[1, true], [2, true], [3, true], [4, true], [5, true],]);
-const startValues = new Map([[1, 0], [2, 0], [3, 0], [4, 0], [5, 0],]);
-const diceImages = new Map([
-  [0, 'dice0'],
-  [1, 'dice1'],
-  [2, 'dice2'],
-  [3, 'dice3'],
-  [4, 'dice4'],
-  [5, 'dice5'],
-  [6, 'dice6'],
-]);
 
 function refreshValues(newValues) {
   values.set(1, newValues.get(1));
@@ -36,6 +25,13 @@ const App = () => {
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
+  const [cookies, setCookie] = useCookies(['user'])
+
+  function CreateCookie() {
+    const newKey = crypto.randomUUID();
+    setCookie('user', newKey, { path: '/' })
+    console.log(`cookie created: ${cookies.user}`)
+  }
 
   function restartGame() {
     setNameIsSet(false)
@@ -115,6 +111,7 @@ const App = () => {
   if (!nameIsSet) {
     return (
       <div className="gameover-table">
+        {cookies.user ? console.log(`cookie exists: ${cookies.user}`) : <CreateCookie />}
         <table className="gameover-table">
           <tbody>
             <tr>
@@ -215,7 +212,7 @@ const App = () => {
   }
 
   // End of game screen
-  saveScore(name, Number(Total()))
+  saveScore(name, Number(Total()), cookies.user)
   return (
     <div>
       <table className="gameover-table">
