@@ -1,13 +1,12 @@
 import { total, subTotal } from "./totals";
-import { saveScore, loadLb } from './dbfetch'
+import { saveScore, loadLb } from "./dbfetch";
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import Scoreboard from './scoreboard'
 import { useState } from 'react'
 import './App.css'
+const DBPORT = 3000; // Node server port
 
-const values = new Map([[1, 0], [2, 0], [3, 0], [4, 0], [5, 0],]);
-const startValues = new Map([[1, 0], [2, 0], [3, 0], [4, 0], [5, 0],]);
 const diceImages = new Map([
   [0, 'dice0'],
   [1, 'dice1'],
@@ -18,15 +17,7 @@ const diceImages = new Map([
   [6, 'dice6'],
 ]);
 
-function refreshValues(nextValues) {
-  values.set(1, nextValues.get(1));
-  values.set(2, nextValues.get(2));
-  values.set(3, nextValues.get(3));
-  values.set(4, nextValues.get(4));
-  values.set(5, nextValues.get(5));
-}
-
-function Total() {
+const Total = () => {
   if (subTotal < 63) {
     return subTotal + total
   } else return (
@@ -39,72 +30,77 @@ function restartGame() {
 }
 
 const App = () => {
-  const [diceState, setDiceState] = useState(values);
-  const [name, setName] = useState('');
   const [nameIsSet, setNameIsSet] = useState(false);
+  const [name, setName] = useState('');
+  const [values, setValues] = useState([0, 0, 0, 0, 0]);
   const [locked, setLocked] = useState([false, false, false, false, false])
   const [roundNum, setRoundNum] = useState(0);
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
 
-  function toggleLock(index) {
+  const handleLock = (index) => {
     setLocked(prevLocked => prevLocked.map((lock, i) => i === index ? !lock : lock));
   };
 
-  function rollAllOnce() {
-    const nextValues = new Map(values)
+  const handleFullRoll = () => {
 
-    for (let i = 1; i <= 5; i++) {
-      if (!locked[i]) {
-        const newValue = Math.floor(Math.random() * 6) + 1;
-        nextValues.set(i, newValue);
+    const newValues = [...values];
+    let rolled = false;
+
+    do {
+      rolled = false;
+      for (let i = 0; i < newValues.length; i++) {
+        if (!locked[i]) {
+          const newValue = Math.floor(Math.random() * 6) + 1;
+          if (newValue !== newValues[i]) {
+            newValues[i] = newValue;
+            rolled = true;
+          }
+        }
       }
-    }
-    refreshValues(nextValues)
-    setDiceState(nextValues)
+    } while (rolled);
+
+    setValues(newValues);
   }
 
-  function updateDice() {
-    setDiceState(values)
-    console.log('Dice were updated to')
-    console.log(values)
-  }
+  const handleRolling = () => {
 
-  function rollDice() {
     if (rollCount >= 3) {
       return;
     }
 
-    rollAllOnce()
-    setTimeout(rollAllOnce, 200)
-    setTimeout(rollAllOnce, 400)
-    setTimeout(rollAllOnce, 600)
-    setTimeout(rollAllOnce, 800)
-    setTimeout(rollAllOnce, 1000)
-    setTimeout(updateDice, 1100)
+    const handleDelay = () => {
+      handleFullRoll()
+      setTimeout(handleFullRoll, 200)
+      setTimeout(handleFullRoll, 400)
+      setTimeout(handleFullRoll, 600)
+      setTimeout(handleFullRoll, 800)
+      setTimeout(handleFullRoll, 1000)
+    };
 
+    handleDelay();
     setRollCount(prevCount => prevCount + 1);
   };
 
-  function handleReset() {
-    refreshValues(startValues)
+  const handleReset = () => {
+    setValues([0, 0, 0, 0, 0])
     setLocked([false, false, false, false, false])
     setRollCount(0)
     setRoundNum(roundNum + 1)
   }
 
-  function RollsLeft() {
+  const RollsLeft = () => {
     return 3 - rollCount
   }
 
 
-  function startGame() {
+  const startGame = () => {
     setNameIsSet(true)
   }
 
-  function showLeaderBoard() {
-    loadLb(setLbScores)
+  const showLeaderBoard = () => {
+    loadLb()
     setNameIsSet(true)
     setShowLb(true)
   }
@@ -182,7 +178,7 @@ const App = () => {
             <tr>
               <td className="scoreboard-table">
                 <Scoreboard
-                  values={[values.get(1), values.get(2), values.get(3), values.get(4), values.get(5)]}
+                  values={[values[0], values[1], values[2], values[3], values[4]]}
                   reset={handleReset}
                   name={name}
                 />
@@ -191,12 +187,12 @@ const App = () => {
               </td>
               <td className="scoreboard-table">
                 <p className="gameover-text"><RollsLeft /></p>
-                <Button handleClick={rollDice} text='Roll' className="rollbtn-container" />
+                <Button handleClick={handleRolling} text='Roll' className="rollbtn-container" />
 
-                {Array.from(diceState.entries()).map(([i, value]) => (
+                {values.map((value, i) => (
                   <div className='dice-container' key={i}>
-                    {<Button2 handleClick={() => toggleLock(i - 1)} text={<div className={diceImages.get(value)}></div>} />}
-                    <div className={locked[i - 1] ? 'locked' : null} />
+                    {<Button2 handleClick={() => handleLock(i)} text={<div className={diceImages.get(value)}></div>} />}
+                    <div className={locked[i] ? 'locked' : null} />
                   </div>
                 ))}
               </td>
@@ -208,7 +204,7 @@ const App = () => {
   }
 
   // End of game screen
-  saveScore(name, Number(Total()))
+  saveScore(name)
   return (
     <div>
       <table className="gameover-table">
