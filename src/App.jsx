@@ -50,7 +50,7 @@ const App = () => {
   const [rollCount, setRollCount] = useState(0);
 
   function toggleLock(i) {
-    const newLockMap = new Map(startLockMap)
+    const newLockMap = new Map(lockState)
     const current = lockState.get(i)
     newLockMap.set(i, !current)
     setLockState(newLockMap)
