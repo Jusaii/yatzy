@@ -17,7 +17,7 @@ const Sum = (props) => {
   for (const value in counts) {
     if (counts[value] >= 3) {
       triplesValue = Number(value);
-      return triplesValue * 4;
+      return triplesValue * 3;
     }
   }
 
