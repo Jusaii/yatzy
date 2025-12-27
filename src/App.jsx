@@ -5,6 +5,7 @@ import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { Total, Scoreboard } from './scoreboard'
 import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 import './App.css'
 
 function refreshValues(newValues) {
@@ -24,6 +25,7 @@ const App = () => {
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
+  const [cookies, setCookie] = useCookies(['user']);
 
   function restartGame() {
     setNameIsSet(false)
