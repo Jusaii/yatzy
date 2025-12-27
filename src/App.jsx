@@ -4,7 +4,7 @@ import { values, startValues, startLockMap, diceImages } from './valuemaps'
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { Total, Scoreboard } from './scoreboard'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import './App.css'
 
@@ -91,17 +91,15 @@ const App = () => {
     return 3 - rollCount
   }
 
+  useEffect(() => {
+    if (!cookies.user) {
+      const newKey = crypto.randomUUID();
+      setCookie('user', newKey, { path: '/' });
+    }
+  }, [cookies.user]);
 
   function startGame() {
     setNameIsSet(true)
-    useEffect(() => {
-      if (!cookies.user) {
-        const newKey = crypto.randomUUID();
-        setCookie('user', newKey, { path: '/' });
-      }
-    }, [cookies.user]);
-    console.log(cookies.user)
-    console.log('cookies.user')
   }
 
   function showLeaderBoard() {
