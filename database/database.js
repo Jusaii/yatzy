@@ -34,7 +34,7 @@ export const addResult = (name, score) => {
 
 export const showResults = () => {
   return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM results ORDER BY score DESC LIMIT 10;", (error, results) => {
+    pool.query("SELECT * FROM results ORDER BY score DESC LIMIT 20;", (error, results) => {
       if (error) {
         return reject(error);
       }
