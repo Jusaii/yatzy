@@ -1,8 +1,7 @@
-import { total, subTotal } from "./totals";
 import { saveScore, loadLb } from './dbfetch'
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
-import Scoreboard from './scoreboard'
+import { Total, Scoreboard } from './scoreboard'
 import { useState } from 'react'
 import './App.css'
 
@@ -27,14 +26,6 @@ function refreshValues(nextValues) {
   values.set(5, nextValues.get(5));
 }
 
-function Total() {
-  if (subTotal < 63) {
-    return subTotal + total
-  } else return (
-    subTotal + 50 + total
-  )
-}
-
 function restartGame() {
   window.location.reload()
 }
@@ -54,12 +45,10 @@ const App = () => {
     const current = lockState.get(i)
     newLockMap.set(i, !current)
     setLockState(newLockMap)
-    console.log(`dice ${i} set from ${current} to ${newLockMap.get(i)}`)
   };
 
   function rollAllOnce() {
     const nextValues = new Map(values)
-    console.log(values)
 
     for (let i = 1; i <= 5; i++) {
       if (lockState.get(i)) {

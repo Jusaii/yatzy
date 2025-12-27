@@ -17,7 +17,7 @@ function Bonus() {
     } else return 50
 }
 
-function Total() {
+export function Total() {
     if (subTotal < 63) {
         return subTotal + total
     } else return (
@@ -25,7 +25,7 @@ function Total() {
     )
 }
 
-export default function Scoreboard(props) {
+export function Scoreboard(props) {
     return (
         <table className="scoreboard-container">
             <tbody className="scoreboard1-container">
