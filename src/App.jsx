@@ -97,6 +97,7 @@ const App = () => {
 
 
   function startGame() {
+    cookies.user ? null : CreateCookie()
     setNameIsSet(true)
   }
 
@@ -110,7 +111,6 @@ const App = () => {
   if (!nameIsSet) {
     return (
       <div className="gameover-table">
-        {cookies.user ? null : <CreateCookie />}
         <table className="gameover-table">
           <tbody>
             <tr>
