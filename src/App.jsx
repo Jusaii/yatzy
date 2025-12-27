@@ -38,7 +38,6 @@ const App = () => {
   const [rollCount, setRollCount] = useState(0);
 
   function restartGame() {
-    setName('')
     setNameIsSet(false)
     setRoundNum(0)
     setShowLb(false)
@@ -125,7 +124,12 @@ const App = () => {
             </tr>
             <tr>
               <td className="gameover-table">
-                <input onChange={e => setName(e.target.value)} className="nameinput-box" />
+                <input
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  className="nameinput-box"
+                  onFocus={() => { setName('') }}
+                />
               </td>
             </tr>
             <tr>
