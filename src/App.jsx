@@ -1,4 +1,5 @@
 import { saveScore, loadLb } from './dbfetch'
+import { total, subTotal, updateTotal, resetTotal, resetSubTotal } from "./totals";
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { Total, Scoreboard } from './scoreboard'
@@ -18,16 +19,12 @@ const diceImages = new Map([
   [6, 'dice6'],
 ]);
 
-function refreshValues(nextValues) {
-  values.set(1, nextValues.get(1));
-  values.set(2, nextValues.get(2));
-  values.set(3, nextValues.get(3));
-  values.set(4, nextValues.get(4));
-  values.set(5, nextValues.get(5));
-}
-
-function restartGame() {
-  window.location.reload()
+function refreshValues(newValues) {
+  values.set(1, newValues.get(1));
+  values.set(2, newValues.get(2));
+  values.set(3, newValues.get(3));
+  values.set(4, newValues.get(4));
+  values.set(5, newValues.get(5));
 }
 
 const App = () => {
@@ -39,6 +36,19 @@ const App = () => {
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
+
+  function restartGame() {
+    setName('')
+    setNameIsSet(false)
+    setRoundNum(0)
+    setShowLb(false)
+    setLockState(startLockMap)
+    setDiceState(startValues)
+    refreshValues(startValues)
+    setRollCount(0)
+    resetTotal()
+    resetSubTotal()
+  }
 
   function toggleLock(i) {
     const newLockMap = new Map(lockState)
@@ -62,8 +72,6 @@ const App = () => {
 
   function updateDice() {
     setDiceState(values)
-    console.log('Dice were updated to')
-    console.log(values)
   }
 
   function rollDice() {
