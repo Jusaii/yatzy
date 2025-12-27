@@ -1,11 +1,13 @@
 import { total, subTotal } from "./totals";
+import { saveScore, loadLb } from './dbfetch'
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import Scoreboard from './scoreboard'
 import { useState } from 'react'
 import './App.css'
-const DBPORT = 3000; // Node server port
 
+const values = new Map([[1, 0], [2, 0], [3, 0], [4, 0], [5, 0],]);
+const startValues = new Map([[1, 0], [2, 0], [3, 0], [4, 0], [5, 0],]);
 const diceImages = new Map([
   [0, 'dice0'],
   [1, 'dice1'],
@@ -15,6 +17,14 @@ const diceImages = new Map([
   [5, 'dice5'],
   [6, 'dice6'],
 ]);
+
+function refreshValues(nextValues) {
+  values.set(1, nextValues.get(1));
+  values.set(2, nextValues.get(2));
+  values.set(3, nextValues.get(3));
+  values.set(4, nextValues.get(4));
+  values.set(5, nextValues.get(5));
+}
 
 const Total = () => {
   if (subTotal < 63) {
@@ -28,70 +38,38 @@ function restartGame() {
   window.location.reload()
 }
 
-function saveScore(name) {
-  console.log('Saving scores')
-  const apiUrl = `${window.location.protocol}//${window.location.hostname}:${DBPORT}/api/save-score`;
-  const totalNum = Number(Total());
-  fetch(apiUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, score: totalNum }),
-  });
-}
-
 const App = () => {
-  const [nameIsSet, setNameIsSet] = useState(false);
+  const [diceState, setDiceState] = useState(values);
   const [name, setName] = useState('');
-  const [values, setValues] = useState([0, 0, 0, 0, 0]);
+  const [nameIsSet, setNameIsSet] = useState(false);
   const [locked, setLocked] = useState([false, false, false, false, false])
   const [roundNum, setRoundNum] = useState(0);
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
 
-  async function loadLb() {
-    console.log('Fetching leaderboard')
-    const apiUrl = `${window.location.protocol}//${window.location.hostname}:${DBPORT}/api/load-scores`;
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        setLbScores(data.result);
-      } else {
-        console.error('Failed to load scores:', data.error);
-      }
-    } catch (error) {
-      console.error('Error fetching leaderboard:', error);
-    }
-  }
 
   const toggleLock = (index) => {
     setLocked(prevLocked => prevLocked.map((lock, i) => i === index ? !lock : lock));
   };
 
   const rollAllOnce = () => {
-    const newValues = [...values];
+    const nextValues = new Map(values)
 
-    for (let i = 0; i < newValues.length; i++) {
+    for (let i = 1; i <= 5; i++) {
       if (!locked[i]) {
-        console.log(`${i + 1} was rolled`)
         const newValue = Math.floor(Math.random() * 6) + 1;
-        if (newValue !== newValues[i]) {
-          newValues[i] = newValue;
-        }
+        nextValues.set(i, newValue);
       }
     }
-    setValues(newValues);
+    refreshValues(nextValues)
+    setDiceState(nextValues)
+  }
+
+  const updateDice = () => {
+    setDiceState(values)
+    console.log('Dice were updated to')
+    console.log(values)
   }
 
   const rollDice = () => {
@@ -105,12 +83,13 @@ const App = () => {
     setTimeout(rollAllOnce, 600)
     setTimeout(rollAllOnce, 800)
     setTimeout(rollAllOnce, 1000)
+    setTimeout(updateDice, 1100)
 
     setRollCount(prevCount => prevCount + 1);
   };
 
   const handleReset = () => {
-    setValues([0, 0, 0, 0, 0])
+    refreshValues(startValues)
     setLocked([false, false, false, false, false])
     setRollCount(0)
     setRoundNum(roundNum + 1)
@@ -126,7 +105,7 @@ const App = () => {
   }
 
   const showLeaderBoard = () => {
-    loadLb()
+    loadLb(setLbScores)
     setNameIsSet(true)
     setShowLb(true)
   }
@@ -204,7 +183,7 @@ const App = () => {
             <tr>
               <td className="scoreboard-table">
                 <Scoreboard
-                  values={[values[0], values[1], values[2], values[3], values[4]]}
+                  values={[values.get(1), values.get(2), values.get(3), values.get(4), values.get(5)]}
                   reset={handleReset}
                   name={name}
                 />
@@ -215,7 +194,7 @@ const App = () => {
                 <p className="gameover-text"><RollsLeft /></p>
                 <Button handleClick={rollDice} text='Roll' className="rollbtn-container" />
 
-                {values.map((value, i) => (
+                {Array.from(diceState.entries()).map(([i, value]) => (
                   <div className='dice-container' key={i}>
                     {<Button2 handleClick={() => toggleLock(i)} text={<div className={diceImages.get(value)}></div>} />}
                     <div className={locked[i] ? 'locked' : null} />
@@ -230,7 +209,7 @@ const App = () => {
   }
 
   // End of game screen
-  saveScore(name)
+  saveScore(name, Number(Total()))
   return (
     <div>
       <table className="gameover-table">
