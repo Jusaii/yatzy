@@ -26,7 +26,7 @@ function refreshValues(nextValues) {
   values.set(5, nextValues.get(5));
 }
 
-const Total = () => {
+function Total() {
   if (subTotal < 63) {
     return subTotal + total
   } else return (
@@ -48,12 +48,11 @@ const App = () => {
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
 
-
-  const toggleLock = (index) => {
+  function toggleLock(index) {
     setLocked(prevLocked => prevLocked.map((lock, i) => i === index ? !lock : lock));
   };
 
-  const rollAllOnce = () => {
+  function rollAllOnce() {
     const nextValues = new Map(values)
 
     for (let i = 1; i <= 5; i++) {
@@ -66,13 +65,13 @@ const App = () => {
     setDiceState(nextValues)
   }
 
-  const updateDice = () => {
+  function updateDice() {
     setDiceState(values)
     console.log('Dice were updated to')
     console.log(values)
   }
 
-  const rollDice = () => {
+  function rollDice() {
     if (rollCount >= 3) {
       return;
     }
@@ -88,23 +87,23 @@ const App = () => {
     setRollCount(prevCount => prevCount + 1);
   };
 
-  const handleReset = () => {
+  function handleReset() {
     refreshValues(startValues)
     setLocked([false, false, false, false, false])
     setRollCount(0)
     setRoundNum(roundNum + 1)
   }
 
-  const RollsLeft = () => {
+  function RollsLeft() {
     return 3 - rollCount
   }
 
 
-  const startGame = () => {
+  function startGame() {
     setNameIsSet(true)
   }
 
-  const showLeaderBoard = () => {
+  function showLeaderBoard() {
     loadLb(setLbScores)
     setNameIsSet(true)
     setShowLb(true)
