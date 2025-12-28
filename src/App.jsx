@@ -231,12 +231,7 @@ const App = () => {
           </tr>
           <tr>
             <td className="gameover-table">
-              <Button handleClick={restartGame} text='Restart game' className="gameover-buttons" />
-            </td>
-          </tr>
-          <tr>
-            <td className="gameover-table">
-              <Button handleClick={showLeaderBoard} text="Show leaderboard" className="gameover-buttons" />
+              <Button handleClick={restartGame} text='Main menu' className="gameover-buttons" />
             </td>
           </tr>
         </tbody>
