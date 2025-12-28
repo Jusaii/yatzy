@@ -27,6 +27,12 @@ const App = () => {
   const [rollCount, setRollCount] = useState(0);
   const [cookies, setCookie] = useCookies(['user']);
 
+  function createCookie() {
+    const userKey = crypto.randomUUID()
+    setCookie('user', userKey, { path: '/' })
+    console.log(`cookie created: ${cookies.user}`)
+  }
+
   function restartGame() {
     setNameIsSet(false)
     setRoundNum(0)
@@ -93,6 +99,7 @@ const App = () => {
 
   function startGame() {
     setNameIsSet(true)
+    cookies.user ? console.log(`cookie exists: ${cookies.user}`) : createCookie()
   }
 
   function showLeaderBoard() {
@@ -205,7 +212,7 @@ const App = () => {
   }
 
   // End of game screen
-  saveScore(name, Number(Total()))
+  saveScore(name, Number(Total()), cookies.user)
   return (
     <div>
       <table className="gameover-table">
