@@ -5,8 +5,8 @@ import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { Total, Scoreboard } from './scoreboard'
 import { useState } from 'react'
-import { useCookies } from 'react-cookie'
 import './App.css'
+import { v4 as uuid } from 'uuid'
 
 function refreshValues(newValues) {
   values.set(1, newValues.get(1));
@@ -25,12 +25,21 @@ const App = () => {
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
-  const [cookies, setCookie] = useCookies(['user']);
 
-  function createCookie() {
-    const userKey = crypto.randomUUID()
-    setCookie('user', userKey, { path: '/' })
-    console.log(`cookie created: ${cookies.user}`)
+  function createUserKey() {
+    const userKey = uuid()
+    localStorage.setItem('yatzyUser', userKey);
+    console.log(`key created: ${userKey}`)
+  }
+
+  function getUserKey() {
+    return localStorage.getItem('yatzyUser');
+  }
+
+  function checkUserKey() {
+    const key = localStorage.getItem('yatzyUser')
+    if (key === null) return false
+    else return true
   }
 
   function restartGame() {
@@ -99,7 +108,13 @@ const App = () => {
 
   function startGame() {
     setNameIsSet(true)
-    cookies.user ? console.log(`cookie exists: ${cookies.user}`) : createCookie()
+    console.log('Game started')
+    const hasKey = checkUserKey()
+    try {
+      hasKey ? console.log(`key exists: ${getUserKey()}`) : createUserKey()
+    } catch (e) {
+      console.log('Cannot access localStorage:', e);
+    }
   }
 
   function showLeaderBoard() {
@@ -212,7 +227,7 @@ const App = () => {
   }
 
   // End of game screen
-  saveScore(name, Number(Total()), cookies.user)
+  saveScore(name, Number(Total()), getUserKey())
   return (
     <div>
       <table className="gameover-table">
