@@ -1,12 +1,12 @@
+import './App.css'
+import Button from './buttons/button'
+import Button2 from './buttons/button2'
+import { useState } from 'react'
 import { saveScore, loadLb } from './dbfetch'
+import { Total, Scoreboard } from './scoreboard'
 import { resetTotal, resetSubTotal } from "./totals";
 import { values, startValues, startLockMap, diceImages } from './valuemaps'
 import { getUserKey, createUserKey, checkUserKey } from './userkeys'
-import Button from './buttons/button'
-import Button2 from './buttons/button2'
-import { Total, Scoreboard } from './scoreboard'
-import { useState } from 'react'
-import './App.css'
 
 function refreshValues(newValues) {
   values.set(1, newValues.get(1));
@@ -58,10 +58,6 @@ const App = () => {
     setDiceState(nextValues)
   }
 
-  function updateDice() {
-    setDiceState(values)
-  }
-
   function rollDice() {
     if (rollCount >= 3) {
       return;
@@ -73,7 +69,7 @@ const App = () => {
     setTimeout(rollAllOnce, 600)
     setTimeout(rollAllOnce, 800)
     setTimeout(rollAllOnce, 1000)
-    setTimeout(updateDice, 1100)
+    setTimeout(setDiceState(values), 1100)
 
     setRollCount(prevCount => prevCount + 1);
   };
@@ -92,7 +88,6 @@ const App = () => {
 
   function startGame() {
     setNameIsSet(true)
-    console.log('Game started')
     const hasKey = checkUserKey()
     try {
       hasKey ? console.log(`key exists: ${getUserKey()}`) : createUserKey()
