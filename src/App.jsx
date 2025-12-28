@@ -131,12 +131,12 @@ const App = () => {
             </tr>
             <tr>
               <td className="gameover-table">
-                <Button handleClick={() => showLeaderBoard('name')} text="Show leaderboard by name" className="gameover-buttons" />
+                <Button handleClick={() => showLeaderBoard('name')} text="Leaderboard by name" className="gameover-buttons" />
               </td>
             </tr>
             <tr>
               <td className="gameover-table">
-                <Button handleClick={() => showLeaderBoard('id')} text="Show leaderboard by id" className="gameover-buttons" />
+                <Button handleClick={() => showLeaderBoard('id')} text="Leaderboard by id" className="gameover-buttons" />
               </td>
             </tr>
           </tbody>
@@ -152,7 +152,7 @@ const App = () => {
           <tbody>
             <tr>
               <td className="leaderboard-screen">
-                <p className="gameover-text">Top 20 players</p>
+                <p className="gameover-text">Leaderboard</p>
               </td>
             </tr>
             <tr>
