@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateTotal } from "../../totals";
+import { updateTotal, perItemScores } from "../../totals";
 
 const Sum = (props) => {
   const values = props.values
@@ -25,6 +25,8 @@ const Quintuplesbutton1 = (props) => {
 
   const handleClick = () => {
     const sum = Sum({ values });
+    perItemScores.set('quintuples', sum)
+    console.log(`Sum of quintuples: ${perItemScores.get('quintuples')}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

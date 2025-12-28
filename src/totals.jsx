@@ -22,3 +22,6 @@ export function resetTotal() {
 }
 
 export { total }
+
+
+export const perItemScores = new Map()

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateTotal } from "../../totals";
+import { updateTotal, perItemScores } from "../../totals";
 
 const Sum = (props) => {
   const values = props.values
@@ -40,6 +40,8 @@ const Fullhousebutton1 = (props) => {
 
   const handleClick = () => {
     const sum = Sum({ values });
+    perItemScores.set('fullhouse', sum)
+    console.log(`Sum of fullhouse: ${perItemScores.get('fullhouse')}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

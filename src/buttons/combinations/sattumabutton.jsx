@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateTotal } from "../../totals";
+import { updateTotal, perItemScores } from "../../totals";
 
 const Sum = (props) => {
   const dicesum = props.values[0] + props.values[1] + props.values[2] + props.values[3] + props.values[4]
@@ -16,6 +16,8 @@ const Sattumabutton1 = (props) => {
 
   const handleClick = () => {
     const sum = Sum({ values });
+    perItemScores.set('mixed', sum)
+    console.log(`Sum of mixed: ${perItemScores.get('mixed')}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

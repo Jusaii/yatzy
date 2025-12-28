@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateTotal } from "../../totals";
+import { updateTotal, perItemScores } from "../../totals";
 
 const Sum = (props) => {
   const values = props.values
@@ -36,6 +36,8 @@ const Pairbutton = (props) => {
 
   const handleClick = () => {
     const sum = Sum({ values });
+    perItemScores.set('pair', sum)
+    console.log(`Sum of pairs: ${perItemScores.get('pair')}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

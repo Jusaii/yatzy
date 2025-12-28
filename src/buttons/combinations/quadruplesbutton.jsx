@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateTotal } from "../../totals";
+import { updateTotal, perItemScores } from "../../totals";
 
 const Sum = (props) => {
   const values = props.values
@@ -31,6 +31,8 @@ const Quadruplesbutton = (props) => {
 
   const handleClick = () => {
     const sum = Sum({ values });
+    perItemScores.set('quadruples', sum)
+    console.log(`Sum of quadruples: ${perItemScores.get('quadruples')}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);
