@@ -1,12 +1,12 @@
 import { saveScore, loadLb } from './dbfetch'
 import { resetTotal, resetSubTotal } from "./totals";
 import { values, startValues, startLockMap, diceImages } from './valuemaps'
+import { getUserKey, createUserKey, checkUserKey } from './userkeys'
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { Total, Scoreboard } from './scoreboard'
 import { useState } from 'react'
 import './App.css'
-import { v4 as uuid } from 'uuid'
 
 function refreshValues(newValues) {
   values.set(1, newValues.get(1));
@@ -25,22 +25,6 @@ const App = () => {
   const [showLb, setShowLb] = useState(false);
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
-
-  function createUserKey() {
-    const userKey = uuid()
-    localStorage.setItem('yatzyUser', userKey);
-    console.log(`key created: ${userKey}`)
-  }
-
-  function getUserKey() {
-    return localStorage.getItem('yatzyUser');
-  }
-
-  function checkUserKey() {
-    const key = localStorage.getItem('yatzyUser')
-    if (key === null) return false
-    else return true
-  }
 
   function restartGame() {
     setNameIsSet(false)
