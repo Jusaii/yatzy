@@ -4,7 +4,7 @@ import Button2 from './buttons/button2'
 import { useState } from 'react'
 import { saveScore, loadLb } from './dbfetch'
 import { Total, Scoreboard } from './scoreboard'
-import { resetTotal, resetSubTotal } from "./totals";
+import { resetTotal, resetSubTotal, perItemScores } from "./totals";
 import { values, startValues, startLockMap, diceImages } from './valuemaps'
 import { getUserKey, createUserKey, checkUserKey } from './userkeys'
 
@@ -26,7 +26,18 @@ const App = () => {
   const [lbScores, setLbScores] = useState([]);
   const [rollCount, setRollCount] = useState(0);
 
+  function startGame() {
+    setNameIsSet(true)
+    const hasKey = checkUserKey()
+    try {
+      hasKey ? console.log(`key exists: ${getUserKey()}`) : createUserKey()
+    } catch (e) {
+      console.log('Cannot access localStorage:', e);
+    }
+  }
+
   function restartGame() {
+    perItemScores.clear()
     setNameIsSet(false)
     setRoundNum(0)
     setShowLb(false)
@@ -36,6 +47,28 @@ const App = () => {
     setRollCount(0)
     resetTotal()
     resetSubTotal()
+  }
+
+  function endGame() {
+    const perItemAsArray = [
+      perItemScores.get('1'),
+      perItemScores.get('2'),
+      perItemScores.get('3'),
+      perItemScores.get('4'),
+      perItemScores.get('5'),
+      perItemScores.get('6'),
+      perItemScores.get('pair'),
+      perItemScores.get('doublepair'),
+      perItemScores.get('triples'),
+      perItemScores.get('quadruples'),
+      perItemScores.get('smallstraight'),
+      perItemScores.get('bigstraight'),
+      perItemScores.get('fullhouse'),
+      perItemScores.get('mixed'),
+      perItemScores.get('quintuples'),
+    ]
+    console.log(perItemAsArray)
+    saveScore(name, Number(Total()), getUserKey())
   }
 
   function toggleLock(i) {
@@ -86,16 +119,6 @@ const App = () => {
     return 3 - rollCount
   }
 
-
-  function startGame() {
-    setNameIsSet(true)
-    const hasKey = checkUserKey()
-    try {
-      hasKey ? console.log(`key exists: ${getUserKey()}`) : createUserKey()
-    } catch (e) {
-      console.log('Cannot access localStorage:', e);
-    }
-  }
 
   function showLeaderBoard(type) {
     loadLb(setLbScores, type)
@@ -212,7 +235,7 @@ const App = () => {
   }
 
   // End of game screen
-  saveScore(name, Number(Total()), getUserKey())
+  endGame()
   return (
     <div>
       <table className="gameover-table">
