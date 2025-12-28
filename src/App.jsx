@@ -131,7 +131,7 @@ const App = () => {
             </tr>
             <tr>
               <td className="gameover-table">
-                <Button handleClick={() => showLeaderBoard('name')} text="Leaderboard by name" className="gameover-buttons" />
+                <Button handleClick={() => showLeaderBoard('name')} text="Top 20 results" className="gameover-buttons" />
               </td>
             </tr>
             <tr>
