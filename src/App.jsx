@@ -188,8 +188,7 @@ const App = () => {
               {showTotalGames ?
                 <td className="leaderboard-table">
                   <p>Games</p>
-                </td>
-                : null
+                </td> : null
               }
             </tr>
             {lbScores.map((score, index) => (
@@ -200,8 +199,7 @@ const App = () => {
                 {showTotalGames ?
                   <td className="leaderboard-table">
                     {score.count}
-                  </td>
-                  : null
+                  </td> : null
                 }
               </tr>
             ))}
