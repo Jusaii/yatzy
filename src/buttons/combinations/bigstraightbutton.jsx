@@ -19,7 +19,6 @@ const Bigstraightbutton1 = (props) => {
   const handleClick = () => {
     const sum = Sum({ values });
     perItemArray[perItemIndex.bigstraight] = sum
-    console.log(`Sum of bigstraight: ${perItemArray[perItemIndex.bigstraight]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

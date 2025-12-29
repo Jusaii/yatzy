@@ -13,7 +13,6 @@ function Numberbuttons(props) {
     const sum = props.target * count;
 
     perItemArray[targetNumber - 1] = sum
-    console.log(`Sum of ${targetNumber}'s: ${perItemArray[targetNumber - 1]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateSubTotal(sum);

@@ -26,7 +26,6 @@ const Quintuplesbutton1 = (props) => {
   const handleClick = () => {
     const sum = Sum({ values });
     perItemArray[perItemIndex.quintuples] = sum
-    console.log(`Sum of quintuples: ${perItemArray[perItemIndex.quintuples]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

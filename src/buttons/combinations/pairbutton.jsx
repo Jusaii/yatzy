@@ -37,7 +37,6 @@ const Pairbutton = (props) => {
   const handleClick = () => {
     const sum = Sum({ values });
     perItemArray[perItemIndex.pair] = sum
-    console.log(`Sum of pairs: ${perItemArray[perItemIndex.pair]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

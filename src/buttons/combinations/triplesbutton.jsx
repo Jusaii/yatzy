@@ -32,7 +32,6 @@ const Triplesbutton = (props) => {
   const handleClick = () => {
     const sum = Sum({ values });
     perItemArray[perItemIndex.triples] = sum
-    console.log(`Sum of triples: ${perItemArray[perItemIndex.triples]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

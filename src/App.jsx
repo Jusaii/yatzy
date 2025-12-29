@@ -27,6 +27,7 @@ const App = () => {
   const [rollCount, setRollCount] = useState(0);
 
   function startGame() {
+    perItemArray.fill(0)
     setNameIsSet(true)
     const hasKey = checkUserKey()
     try {
@@ -37,7 +38,7 @@ const App = () => {
   }
 
   function restartGame() {
-    perItemArray.fill(null)
+    perItemArray.fill(0)
     setNameIsSet(false)
     setRoundNum(0)
     setShowLb(false)
@@ -50,8 +51,10 @@ const App = () => {
   }
 
   function endGame() {
+    console.log(`pörri: ${!perItemArray.includes(0)}`)
     console.log(perItemArray)
-    saveScore(name, Number(Total()), getUserKey())
+    console.log('not saving score')
+    // saveScore(name, Number(Total()), getUserKey())
   }
 
   function toggleLock(i) {

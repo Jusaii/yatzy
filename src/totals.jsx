@@ -24,7 +24,7 @@ export function resetTotal() {
 export { total }
 
 
-export const perItemArray = new Array(15).fill(null)
+export const perItemArray = new Array(15).fill(0)
 export const perItemIndex = {
   one: 0,
   two: 1,

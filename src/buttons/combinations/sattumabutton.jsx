@@ -17,7 +17,6 @@ const Sattumabutton1 = (props) => {
   const handleClick = () => {
     const sum = Sum({ values });
     perItemArray[perItemIndex.mixed] = sum
-    console.log(`Sum of mixed: ${perItemArray[perItemIndex.mixed]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

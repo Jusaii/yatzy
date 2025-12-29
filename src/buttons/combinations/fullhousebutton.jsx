@@ -41,7 +41,6 @@ const Fullhousebutton1 = (props) => {
   const handleClick = () => {
     const sum = Sum({ values });
     perItemArray[perItemIndex.fullhouse] = sum
-    console.log(`Sum of fullhouse: ${perItemArray[perItemIndex.fullhouse]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

@@ -32,7 +32,6 @@ const Quadruplesbutton = (props) => {
   const handleClick = () => {
     const sum = Sum({ values });
     perItemArray[perItemIndex.quadruples] = sum
-    console.log(`Sum of quadruples: ${perItemArray[perItemIndex.quadruples]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);
