@@ -24,4 +24,21 @@ export function resetTotal() {
 export { total }
 
 
-export const perItemScores = new Map()
+export const perItemArray = new Array(15).fill(null)
+export const perItemIndex = {
+  one: 0,
+  two: 1,
+  three: 2,
+  four: 3,
+  five: 4,
+  six: 5,
+  pair: 6,
+  doublepair: 7,
+  triples: 8,
+  quadruples: 9,
+  smallstraight: 10,
+  bigstraight: 11,
+  fullhouse: 12,
+  mixed: 13,
+  quintuples: 14,
+}

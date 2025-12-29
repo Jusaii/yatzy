@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateTotal, perItemScores } from "../../totals";
+import { updateTotal, perItemArray, perItemIndex } from "../../totals";
 
 const Sum = (props) => {
   const values = props.values
@@ -18,8 +18,8 @@ const Bigstraightbutton1 = (props) => {
 
   const handleClick = () => {
     const sum = Sum({ values });
-    perItemScores.set('bigstraight', sum)
-    console.log(`Sum of bigstraight: ${perItemScores.get('bigstraight')}`)
+    perItemArray[perItemIndex.bigstraight] = sum
+    console.log(`Sum of bigstraight: ${perItemArray[perItemIndex.bigstraight]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);

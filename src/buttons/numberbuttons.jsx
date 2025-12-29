@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateSubTotal, perItemScores } from "../totals";
+import { updateSubTotal, perItemArray } from "../totals";
 
 function Numberbuttons(props) {
   const [buttonText, setButtonText] = useState(props.text);
@@ -12,8 +12,8 @@ function Numberbuttons(props) {
     const count = values.filter(value => value === targetNumber).length;
     const sum = props.target * count;
 
-    perItemScores.set(`${targetNumber}`, sum)
-    console.log(`Sum of ${targetNumber}'s: ${perItemScores.get(`${targetNumber}`)}`)
+    perItemArray[targetNumber - 1] = sum
+    console.log(`Sum of ${targetNumber}'s: ${perItemArray[targetNumber - 1]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateSubTotal(sum);

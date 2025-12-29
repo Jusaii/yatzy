@@ -4,7 +4,7 @@ import Button2 from './buttons/button2'
 import { useState } from 'react'
 import { saveScore, loadLb } from './dbfetch'
 import { Total, Scoreboard } from './scoreboard'
-import { resetTotal, resetSubTotal, perItemScores } from "./totals";
+import { resetTotal, resetSubTotal, perItemArray } from "./totals";
 import { values, startValues, startLockMap, diceImages } from './valuemaps'
 import { getUserKey, createUserKey, checkUserKey } from './userkeys'
 
@@ -37,7 +37,7 @@ const App = () => {
   }
 
   function restartGame() {
-    perItemScores.clear()
+    perItemArray.fill(null)
     setNameIsSet(false)
     setRoundNum(0)
     setShowLb(false)
@@ -50,24 +50,7 @@ const App = () => {
   }
 
   function endGame() {
-    const perItemAsArray = [
-      perItemScores.get('1'),
-      perItemScores.get('2'),
-      perItemScores.get('3'),
-      perItemScores.get('4'),
-      perItemScores.get('5'),
-      perItemScores.get('6'),
-      perItemScores.get('pair'),
-      perItemScores.get('doublepair'),
-      perItemScores.get('triples'),
-      perItemScores.get('quadruples'),
-      perItemScores.get('smallstraight'),
-      perItemScores.get('bigstraight'),
-      perItemScores.get('fullhouse'),
-      perItemScores.get('mixed'),
-      perItemScores.get('quintuples'),
-    ]
-    console.log(perItemAsArray)
+    console.log(perItemArray)
     saveScore(name, Number(Total()), getUserKey())
   }
 

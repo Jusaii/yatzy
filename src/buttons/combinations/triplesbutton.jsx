@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateTotal, perItemScores } from "../../totals";
+import { updateTotal, perItemArray, perItemIndex } from "../../totals";
 
 const Sum = (props) => {
   const values = props.values
@@ -31,8 +31,8 @@ const Triplesbutton = (props) => {
 
   const handleClick = () => {
     const sum = Sum({ values });
-    perItemScores.set('triples', sum)
-    console.log(`Sum of triples: ${perItemScores.get('triples')}`)
+    perItemArray[perItemIndex.triples] = sum
+    console.log(`Sum of triples: ${perItemArray[perItemIndex.triples]}`)
     setButtonText(`${sum}`);
     setIsClicked(true);
     updateTotal(sum);
