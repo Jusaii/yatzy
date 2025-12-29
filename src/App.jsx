@@ -187,7 +187,7 @@ const App = () => {
               </td>
               {showTotalGames ?
                 <td className="leaderboard-table">
-                  <p>Total games</p>
+                  <p>Games</p>
                 </td>
                 : null
               }
