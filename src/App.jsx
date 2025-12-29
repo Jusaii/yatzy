@@ -51,10 +51,13 @@ const App = () => {
   }
 
   function endGame() {
-    console.log(`pörri: ${!perItemArray.includes(0)}`)
+    let perfect = 1
+    if (perItemArray.includes(0)) {
+      perfect = 0
+    }
+    console.log(`pörri: ${perfect}`)
     console.log(perItemArray)
-    console.log('not saving score')
-    // saveScore(name, Number(Total()), getUserKey())
+    saveScore(name, Number(Total()), getUserKey(), perfect)
   }
 
   function toggleLock(i) {
