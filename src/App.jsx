@@ -53,9 +53,9 @@ const App = () => {
   }
 
   function endGame() {
-    let perfect = 1
+    let perfect = true
     if (perItemArray.includes(0)) {
-      perfect = 0
+      perfect = false
     }
     saveScore(name, Number(Total()), getUserKey(), perfect)
   }
