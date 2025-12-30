@@ -25,11 +25,10 @@ var (
 
 // Struct for data in the database
 type UserDataStruct struct {
-	Name    string `json:"name"`
-	Score   int    `json:"score"`
-	Id      string `json:"id"`
-	Perfect bool   `json:"perfect"`
-	Row     string `json:"row"`
+	Name  string `json:"name"`
+	Score int    `json:"score"`
+	Id    string `json:"id"`
+	Row   string `json:"row"`
 }
 
 // Function to open a connection to the database
