@@ -35,7 +35,6 @@ export async function loadLb(setlb, type) {
 
     const data = await response.json();
 
-    console.log(data)
     if (data.success) {
       setlb(data.result);
     } else {
