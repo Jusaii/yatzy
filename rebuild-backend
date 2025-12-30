@@ -29,7 +29,7 @@ show-help() {
 
 	 Available commands:
 	   -h | Show help
-	   -r | [OPTIONAL] automatically runs the server
+	   -r | [OPTIONAL] automatically runs the servers
 	
 	EOF
 }
@@ -62,7 +62,7 @@ main() {
 
 
 	if [[ "$RUN" = true ]]; then
-		./backend/backend
+		./start-servers
 	fi
 }
 

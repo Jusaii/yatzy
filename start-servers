@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
+#
+# A script to start the frontend and 
+# backend into a tmux session so that
+# they are easy to manage and kill
 
-# Script to start the backend
-# and frontend servers
+SESSION="yatzy-servers"
 
-printf '\e[H\e[2J'
-./backend/backend &
-npm run dev
+tmux new-session -d -s "$SESSION" -n "frontend" "npm run dev"
+
+tmux new-window -t "$SESSION" -n "backend" "./backend/backend"
+
