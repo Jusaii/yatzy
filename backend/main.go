@@ -29,6 +29,7 @@ type UserDataStruct struct {
 	Score   int    `json:"score"`
 	Id      string `json:"id"`
 	Perfect bool   `json:"perfect"`
+	Row     string `json:"row"`
 }
 
 // Function to open a connection to the database
@@ -75,6 +76,6 @@ func main() {
 	router.GET("/GetStats", getStatsById)
 	router.POST("/AddScore", addScore)
 
-	fmt.Println("Backend Server running...")
+	fmt.Println("Server running...")
 	router.Run("0.0.0.0:3000")
 }
