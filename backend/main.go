@@ -55,6 +55,8 @@ func main() {
 		AllowOrigins: []string{
 			"http://" + ip + ":2222",
 			"http://" + ip + ":5173",
+			"http://localhost:2222",
+			"http://localhost:5173",
 		},
 		AllowMethods: []string{
 			"GET", "POST",
@@ -65,7 +67,7 @@ func main() {
 		ExposeHeaders: []string{
 			"Content-Length",
 		},
-		AllowCredentials: true, // only if you use cookies/auth
+		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
 
@@ -74,5 +76,5 @@ func main() {
 	router.POST("/AddScore", addScore)
 
 	fmt.Println("Backend Server running...")
-	router.Run(ip + ":3000")
+	router.Run("0.0.0.0:3000")
 }
