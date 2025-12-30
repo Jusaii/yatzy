@@ -4,9 +4,17 @@
 # backend into a tmux session so that
 # they are easy to manage and kill
 
+printf "\e[31mStarting servers...\e[0m"
 SESSION="yatzy-servers"
 
 tmux new-session -d -s "$SESSION" -n "frontend" "npm run dev"
 
 tmux new-window -t "$SESSION" -n "backend" "./backend/backend"
 
+printf "\r\e[0K" # clear the line
+printf "\e[32mServers started\e[0m\n"
+
+echo To close the servers:
+echo '    tmux kill-session'
+echo or if there is multiple tmux sessions:
+echo '    tmux kill-session -t yatzy-servers'
