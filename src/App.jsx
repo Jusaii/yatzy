@@ -29,7 +29,6 @@ const App = () => {
   const [rollCount, setRollCount] = useState(0);
 
   function startGame() {
-    perItemArray.fill(0)
     setNameIsSet(true)
     const hasKey = checkUserKey()
     try {
