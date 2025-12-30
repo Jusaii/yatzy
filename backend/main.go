@@ -54,6 +54,7 @@ func main() {
 		AllowOrigins: []string{
 			"http://localhost:5173",
 			"http://localhost:2222",
+			"http://192.168.68.109:2222",
 		},
 		AllowMethods: []string{
 			"GET", "POST",
@@ -73,5 +74,5 @@ func main() {
 	router.POST("/AddScore", addScore)
 
 	fmt.Println("Server running...")
-	router.Run("localhost:3000")
+	router.Run("192.168.68.109:3000")
 }
