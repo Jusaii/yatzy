@@ -73,6 +73,6 @@ func main() {
 	router.GET("/GetStats", getStatsById)
 	router.POST("/AddScore", addScore)
 
-	fmt.Println("Server running...")
+	fmt.Println("Backend Server running...")
 	router.Run(ip + ":3000")
 }
