@@ -7,7 +7,7 @@
 printf "\e[31mStarting servers...\e[0m"
 SESSION="yatzy-servers"
 
-tmux new-session -d -s "$SESSION" -n "frontend" "npm run dev"
+tmux new-session -d -s "$SESSION" -n "frontend" "./server/server"
 
 tmux new-window -t "$SESSION" -n "db-api" "./db-api/db-api"
 
