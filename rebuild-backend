@@ -48,12 +48,11 @@ main() {
 	done
 
 	printf "\e[31mBuilding...\e[0m"
-	cd ./backend/
+	cd ./db-api/
 	go build
 	cd ..
 	printf "\r\e[0K" # clear the line
 	printf "\e[32mBuilding done\e[0m\n"
-	sleep .2
 }
 
 main "$@"
