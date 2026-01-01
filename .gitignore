@@ -12,7 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Binaries
 db-api/db-api
+server/server
 
 # Editor directories and files
 .idea
