@@ -5,8 +5,6 @@ import (
 	"strconv"
 	"strings"
 
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,13 +19,13 @@ type NewScoreReq struct {
 	Value  int    `json:"value"`
 }
 
-var UserMap = map[string]GameData{}
+var UserMap = map[string]*GameData{}
 
 func InitUser(id string, name string) {
 	var newUser GameData
 	newUser.name = name
 
-	UserMap[id] = newUser
+	UserMap[id] = &newUser
 
 }
 
@@ -39,6 +37,7 @@ func UpdateScores(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	UserMap[req.Id].scorearray[req.Target] = req.Value
 
 	c.IndentedJSON(http.StatusOK, "Game started")
 }
@@ -67,8 +66,6 @@ func getScoreRow(id string) string {
 		stringarr[i] = strconv.Itoa(scoreRow[i])
 	}
 	row := strings.Join(stringarr[:], ";")
-	fmt.Println("converted ", scoreRow)
-	fmt.Println("to ", row)
 
 	return row
 }

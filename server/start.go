@@ -40,7 +40,8 @@ func endGame(c *gin.Context) {
 	}
 
 	total := calculateTotal(req.Id)
-	err = addScore(req.Name, total, req.Id, "no row")
+	row := getScoreRow(req.Id)
+	err = addScore(req.Name, total, req.Id, row)
 	if err != nil {
 		c.IndentedJSON(500, gin.H{"error": "failed to add score"})
 		panic(err)
