@@ -45,13 +45,12 @@ const App = () => {
       console.log('Cannot access localStorage:', e);
     }
 
-    const id = getUserKey()
-    makePOSTrequest('start', { id, name })
+    makePOSTrequest('start', { id: getUserKey(), name })
     setNameIsSet(true)
   }
 
   function restartGame() {
-    // TODO: Add a call and logic to restart game stats in server
+    makePOSTrequest('restart', { id: getUserKey(), name })
     setNameIsSet(false)
     setRoundNum(0)
     setShowLb(false)

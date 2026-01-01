@@ -39,8 +39,10 @@ func UpdateScores(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("New score update requested:")
-	fmt.Println(req.Id, req.Target, req.Value)
+	fmt.Println("New score update requested, id:", req.Id,
+		"target:", req.Target,
+		"value:", req.Value)
+	fmt.Println("All current users:", UserMap)
 
 	c.IndentedJSON(http.StatusOK, "Game started")
 }
