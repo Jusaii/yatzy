@@ -18,9 +18,8 @@ fatal() {
 show-help() {
 	cat <<-EOF
 	
-	 This is a script to rebuild the yatzy web stuff,
-	 the server that serves the website and the database
-	 api server.
+	 This is a script to rebuild the yatzy web app
+	 and the server to serve the app
 
 	 Available commands:
 	   -h | Show help
@@ -42,13 +41,6 @@ main() {
 			*) fatal 'Bad option, use -h for help';;
 		esac
 	done
-
-	printf "\e[31mBuilding db-api...\e[0m"
-	cd ./db-api/
-	go build
-	cd ..
-	printf "\r\e[0K" # clear the line
-	printf "\e[32mBuilding db-api done\e[0m\n"
 
 	printf "\e[31mBuilding server...\e[0m"
 	cd ./server/

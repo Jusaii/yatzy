@@ -1,23 +1,86 @@
 package main
 
 import (
-	"net/http"
+	"database/sql"
+	"fmt"
 	"os"
-	"path/filepath"
+	"strconv"
+	"time"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
+	_ "github.com/lib/pq"
 )
 
-func spaHandler(distDir string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		path := filepath.Join(distDir, r.URL.Path)
-		if info, err := os.Stat(path); err == nil && !info.IsDir() {
-			http.ServeFile(w, r, path)
-			return
-		}
-		http.ServeFile(w, r, filepath.Join(distDir, "index.html"))
+var db *sql.DB
+var (
+	host        = os.Getenv("HOST")
+	port, error = strconv.Atoi(os.Getenv("PORT"))
+	user        = os.Getenv("USER")
+	password    = os.Getenv("PASSWORD")
+	dbname      = os.Getenv("DATABASE")
+	ip          = os.Getenv("IP")
+)
+
+// Struct for data in the database
+type UserDataStruct struct {
+	Name  string `json:"name"`
+	Score int    `json:"score"`
+	Id    string `json:"id"`
+	Row   string `json:"row"`
+}
+
+// Function to open a connection to the database
+func openDatabase() *sql.DB {
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		panic(err)
 	}
+
+	return db
 }
 
 func main() {
-	http.HandleFunc("/", spaHandler("web/dist"))
-	http.ListenAndServe(":2222", nil)
+	gin.SetMode(gin.ReleaseMode)
+	db = openDatabase()
+	defer db.Close()
+
+	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"http://" + ip + ":2222",
+			"http://" + ip + ":5173",
+			"http://localhost:2222",
+			"http://localhost:5173",
+		},
+		AllowMethods: []string{
+			"GET", "POST",
+		},
+		AllowHeaders: []string{
+			"Origin", "Content-Type", "Authorization",
+		},
+		ExposeHeaders: []string{
+			"Content-Length",
+		},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
+	api := router.Group("/api")
+	{
+		api.GET("/getscores", getTopScores)
+		api.GET("/getstats", getStatsById)
+		api.POST("/addscore", addScore)
+	}
+
+	router.Use(static.Serve("/", static.LocalFile("web/dist", true)))
+
+	fmt.Println("Db-api running...")
+	router.Run("0.0.0.0:3000")
 }
