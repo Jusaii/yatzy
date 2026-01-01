@@ -2,13 +2,22 @@ import './App.css'
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { useState } from 'react'
-import { saveScore, loadLb } from './dbfetch'
+import { saveScore, loadLb, PORT } from './dbfetch'
 import { Total, Scoreboard } from './scoreboard'
-import { resetTotal, resetSubTotal, perItemArray } from "./totals";
+import { resetTotal, resetSubTotal } from "./totals";
 import { values, startValues, startLockMap, diceImages } from './valuemaps'
 import { getUserKey, createUserKey, checkUserKey } from './userkeys'
 let showTotalGames = false
 let LBWIDTH = 3
+
+export function makePOSTrequest(url, body) {
+  const fullUrl = `${window.location.protocol}//${window.location.hostname}:${PORT}/${url}`;
+  fetch(fullUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+}
 
 function refreshValues(newValues) {
   values.set(1, newValues.get(1));
@@ -29,17 +38,20 @@ const App = () => {
   const [rollCount, setRollCount] = useState(0);
 
   function startGame() {
-    setNameIsSet(true)
     const hasKey = checkUserKey()
     try {
       hasKey ? null : createUserKey()
     } catch (e) {
       console.log('Cannot access localStorage:', e);
     }
+
+    const id = getUserKey()
+    makePOSTrequest('start', { id, name })
+    setNameIsSet(true)
   }
 
   function restartGame() {
-    perItemArray.fill(0)
+    // TODO: Add a call and logic to restart game stats in server
     setNameIsSet(false)
     setRoundNum(0)
     setShowLb(false)
@@ -52,8 +64,7 @@ const App = () => {
   }
 
   function endGame() {
-    const row = perItemArray.join(';')
-    saveScore(name, Number(Total()), getUserKey(), row)
+    saveScore(name, Number(Total()), getUserKey())
   }
 
   function toggleLock(i) {

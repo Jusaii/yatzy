@@ -3,12 +3,13 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	// "net/http"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/static"
+	// "github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
@@ -75,9 +76,11 @@ func main() {
 		api.GET("/getstats", getStatsById)
 		api.POST("/addscore", addScore)
 	}
+	router.POST("/start", startGame)
+	router.POST("/updatescores", UpdateScores)
 
-	router.Use(static.Serve("/", static.LocalFile("web/dist", true)))
+	// router.Use(static.Serve("/", static.LocalFile("web/dist", true)))
 
-	fmt.Println("Db-api running...")
+	fmt.Println("Server running...")
 	router.Run("0.0.0.0:2222")
 }
