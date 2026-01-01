@@ -1,4 +1,4 @@
-module yatzy/db-api
+module yatzy/server
 
 go 1.25.5
 
