@@ -73,9 +73,9 @@ func main() {
 	{
 		api.GET("/getscores", getTopScores)
 		api.GET("/getstats", getStatsById)
-		api.POST("/addscore", addScore)
 	}
 	router.POST("/start", startGame)
+	router.POST("/end", endGame)
 	router.POST("/restart", restartGame)
 	router.POST("/updatescores", UpdateScores)
 

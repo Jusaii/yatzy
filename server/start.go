@@ -33,6 +33,22 @@ func startGame(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, "Game started")
 }
 
+func endGame(c *gin.Context) {
+	req, err := getReq(c)
+	if err != nil {
+		return
+	}
+
+	total := calculateTotal(req.Id)
+	err = addScore(req.Name, total, req.Id, "no row")
+	if err != nil {
+		c.IndentedJSON(500, gin.H{"error": "failed to add score"})
+		panic(err)
+	}
+
+	c.IndentedJSON(http.StatusOK, "Score saved")
+}
+
 func restartGame(c *gin.Context) {
 	req, err := getReq(c)
 	if err != nil {

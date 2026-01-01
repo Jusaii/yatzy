@@ -2,7 +2,7 @@ import './App.css'
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { useState } from 'react'
-import { saveScore, loadLb, PORT } from './dbfetch'
+import { loadLb, PORT } from './dbfetch'
 import { Total, Scoreboard } from './scoreboard'
 import { resetTotal, resetSubTotal } from "./totals";
 import { values, startValues, startLockMap, diceImages } from './valuemaps'
@@ -63,7 +63,7 @@ const App = () => {
   }
 
   function endGame() {
-    saveScore(name, Number(Total()), getUserKey())
+    makePOSTrequest('end', { id: getUserKey(), name })
   }
 
   function toggleLock(i) {

@@ -2,8 +2,11 @@ package main
 
 import (
 	"net/http"
+	"strconv"
+	"strings"
 
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,9 +29,6 @@ func InitUser(id string, name string) {
 
 	UserMap[id] = newUser
 
-	fmt.Println("New User created:")
-	fmt.Println(UserMap[id].name)
-	fmt.Println(UserMap[id].scorearray)
 }
 
 func UpdateScores(c *gin.Context) {
@@ -39,10 +39,36 @@ func UpdateScores(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("New score update requested, id:", req.Id,
-		"target:", req.Target,
-		"value:", req.Value)
-	fmt.Println("All current users:", UserMap)
 
 	c.IndentedJSON(http.StatusOK, "Game started")
+}
+
+func calculateTotal(id string) int {
+	scoreRow := UserMap[id].scorearray
+	total := 0
+	for i := range 6 {
+		total += scoreRow[i]
+	}
+	if total >= 63 {
+		total += 50
+	}
+	for i := 6; i < 15; i++ {
+		total += scoreRow[i]
+	}
+
+	return total
+}
+
+func getScoreRow(id string) string {
+	scoreRow := UserMap[id].scorearray
+	var stringarr [15]string
+
+	for i := range scoreRow {
+		stringarr[i] = strconv.Itoa(scoreRow[i])
+	}
+	row := strings.Join(stringarr[:], ";")
+	fmt.Println("converted ", scoreRow)
+	fmt.Println("to ", row)
+
+	return row
 }
