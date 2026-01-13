@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+  web:
+    build: .
+    ports:
+      - 2222:2222
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_USER: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+
+
+volumes:
+  pgdata:

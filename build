@@ -10,6 +10,7 @@
 
 DIR=${PWD##*/}
 SERVER_ONLY=false
+START_SERVERS=false
 
 fatal() {
 	echo '[FATAL]' "$@" >&2
@@ -23,7 +24,8 @@ show-help() {
 	 and the server to serve the app
 
 	 Available commands:
-	   -s | Only rebuild the server
+	   -s | Start the servers after rebuilding
+	   -b | Only rebuild the server
 	   -h | Show help
 	
 	EOF
@@ -34,9 +36,10 @@ main() {
 		fatal 'wrong directory'
 	fi
 	local OPTARG OPTIND opt
-	while getopts 'hs' opt; do
+	while getopts 'hsb' opt; do
 		case "$opt" in
-			s) SERVER_ONLY=true;;
+			s) START_SERVERS=true;;
+			b) SERVER_ONLY=true;;
 			h)
 				show-help
 				exit 0
@@ -47,18 +50,28 @@ main() {
 
 	printf "\e[31mBuilding server...\e[0m"
 	cd ./server/
-	go build
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o server
 	cd ..
-	printf "\r\e[0K" # clear the line
+	printf "\r\e[0K"
 	printf "\e[32mBuilding server done\e[0m\n"
 
+	# Rebuild web part if it's not disabled
 	if [[ $SERVER_ONLY = false ]]; then
 		printf "\e[31mCompiling website...\e[0m"
 		cd ./web/
 		npm run build >/dev/null
 		cd ..
-		printf "\r\e[0K" # clear the line
+		printf "\r\e[0K"
 		printf "\e[32mCompiling website done\e[0m\n"
+	fi
+
+	# Start the servers after rebuilding if opted
+	# Else the command has to be run manually with --build
+	# after to use newest build
+	if [[ $START_SERVERS = true ]]; then
+		printf "\e[31mStarting server...\e[0m"
+
+		docker compose up --build
 	fi
 }
 
