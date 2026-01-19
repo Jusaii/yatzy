@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -16,9 +15,9 @@ import (
 
 var db *sql.DB
 var (
-	port, _  = strconv.Atoi(os.Getenv("DATABASE_HOST"))
-	user     = os.Getenv("POSTGRES_USER")
-	password = os.Getenv("POSTGRES_PASSWORD")
+	port     = 5432
+	user     = os.Getenv("DATABASE_USER")
+	password = os.Getenv("DATABASE_PASSWORD")
 	dbname   = os.Getenv("DATABASE_NAME")
 )
 

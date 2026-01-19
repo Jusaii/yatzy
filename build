@@ -5,8 +5,7 @@
 # The script also partly enforces that by checking
 # that the directory the script is run in has the
 # correct name, but that obviously doesn't make it
-# impossible to run the script at locations where it
-# wasnt designed to be run
+# impossible to run the script in ways it wasnt designed
 
 DIR=${PWD##*/}
 SERVER_ONLY=false
@@ -31,6 +30,28 @@ show-help() {
 	EOF
 }
 
+build-server() {
+	printf "\e[31mBuilding server...\e[0m"
+
+	cd ./server/
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o server
+	cd ..
+
+	printf "\r\e[0K"
+	printf "\e[32mBuilding server done\e[0m\n"
+}
+
+build-web() {
+	printf "\e[31mCompiling website...\e[0m"
+
+	cd ./web/
+	npm run build >/dev/null
+	cd ..
+
+	printf "\r\e[0K"
+	printf "\e[32mCompiling website done\e[0m\n"
+}
+
 main() {
 	if [[ $DIR != "yatzy" ]]; then
 		fatal 'wrong directory'
@@ -48,21 +69,9 @@ main() {
 		esac
 	done
 
-	printf "\e[31mBuilding server...\e[0m"
-	cd ./server/
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o server
-	cd ..
-	printf "\r\e[0K"
-	printf "\e[32mBuilding server done\e[0m\n"
-
-	# Rebuild web part if it's not disabled
+	build-server
 	if [[ $SERVER_ONLY = false ]]; then
-		printf "\e[31mCompiling website...\e[0m"
-		cd ./web/
-		npm run build >/dev/null
-		cd ..
-		printf "\r\e[0K"
-		printf "\e[32mCompiling website done\e[0m\n"
+		build-web
 	fi
 
 	# Start the servers after rebuilding if opted
