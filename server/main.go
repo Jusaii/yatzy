@@ -81,6 +81,6 @@ func main() {
 
 	router.Use(static.Serve("/", static.LocalFile("web/dist", true)))
 
-	fmt.Println("Server running...")
+	fmt.Println("[ INFO ] Server running...")
 	router.Run("0.0.0.0:2222")
 }

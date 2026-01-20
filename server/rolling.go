@@ -43,7 +43,6 @@ func lockDice(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	dice -= 1
 
 	var req idStruct
 	err = c.ShouldBindJSON(&req)
