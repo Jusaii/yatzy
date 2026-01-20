@@ -11,6 +11,12 @@ import (
 type GameData struct {
 	name       string
 	scorearray [15]int
+	diceArray  [5]DiceData
+}
+
+type DiceData struct {
+	value  int
+	locked bool
 }
 
 type NewScoreReq struct {
@@ -24,9 +30,12 @@ var UserMap = map[string]*GameData{}
 func InitUser(id string, name string) {
 	var newUser GameData
 	newUser.name = name
+	for i := range newUser.diceArray {
+		newUser.diceArray[i].value = 0
+		newUser.diceArray[i].locked = false
+	}
 
 	UserMap[id] = &newUser
-
 }
 
 func UpdateScores(c *gin.Context) {
@@ -38,6 +47,8 @@ func UpdateScores(c *gin.Context) {
 		return
 	}
 	UserMap[req.Id].scorearray[req.Target] = req.Value
+
+	resetDice(req.Id)
 
 	c.IndentedJSON(http.StatusOK, "Game started")
 }

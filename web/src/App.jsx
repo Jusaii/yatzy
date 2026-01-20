@@ -2,7 +2,7 @@ import './App.css'
 import Button from './buttons/button'
 import Button2 from './buttons/button2'
 import { useState } from 'react'
-import { loadLb, makePOSTrequest } from './requests'
+import { loadLb, makePOSTrequest, makeGETrequest } from './requests'
 import { Total, Scoreboard } from './scoreboard'
 import { resetTotal, resetSubTotal } from "./totals";
 import { values, startValues, startLockMap, diceImages } from './valuemaps'
@@ -58,13 +58,14 @@ const App = () => {
   }
 
   function toggleLock(i) {
+    makePOSTrequest(`lockDice/${i}`, { id: getUserKey() })
     const newLockMap = new Map(lockState)
     const current = lockState.get(i)
     newLockMap.set(i, !current)
     setLockState(newLockMap)
   };
 
-  function rollAllOnce() {
+  function simulateRollOnce() {
     const nextValues = new Map(values)
 
     for (let i = 1; i <= 5; i++) {
@@ -77,18 +78,32 @@ const App = () => {
     setDiceState(nextValues)
   }
 
-  function rollDice() {
+  async function rollDice() {
     if (rollCount >= 3) {
       return;
     }
 
-    rollAllOnce()
-    setTimeout(rollAllOnce, 200)
-    setTimeout(rollAllOnce, 400)
-    setTimeout(rollAllOnce, 600)
-    setTimeout(rollAllOnce, 800)
-    setTimeout(rollAllOnce, 1000)
-    setTimeout(setDiceState(values), 1100)
+    const response = await makeGETrequest(`rollDice/${getUserKey()}`)
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+    const data = await response.json();
+
+    simulateRollOnce()
+    setTimeout(simulateRollOnce, 200)
+    setTimeout(simulateRollOnce, 400)
+    setTimeout(simulateRollOnce, 600)
+    setTimeout(simulateRollOnce, 800)
+    setTimeout(simulateRollOnce, 1000)
+
+    setTimeout(() => {
+      const realValues = new Map(values)
+      for (let i = 1; i <= 5; i++) {
+        realValues.set(i, data.values[i - 1])
+      }
+      setDiceState(realValues)
+      refreshValues(realValues)
+    }, 1100)
 
     setRollCount(prevCount => prevCount + 1);
   };

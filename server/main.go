@@ -75,6 +75,9 @@ func main() {
 	router.POST("/end", endGame)
 	router.POST("/restart", restartGame)
 	router.POST("/updatescores", UpdateScores)
+	router.POST("/lockDice/:dice", lockDice)
+
+	router.GET("/rollDice/:id", rollDice)
 
 	router.Use(static.Serve("/", static.LocalFile("web/dist", true)))
 
