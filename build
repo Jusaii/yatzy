@@ -89,11 +89,11 @@ main() {
 
 	sleep .5
 	if [[ $START_SERVERS = true ]]; then
-		printf "\e[31mStopping existing server...\e[0m\n"
+		printf "[\e[35m INFO \e[0m] Checking for existing server...\n"
 		docker compose down
 
 		sleep .2
-		printf "\e[32mStarting server...\e[0m\n"
+		printf "[\e[35m INFO \e[0m] Starting server...\n"
 		sleep .5
 		docker compose up --build
 	fi

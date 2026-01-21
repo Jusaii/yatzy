@@ -25,7 +25,7 @@ func rollDice(c *gin.Context) {
 		values[i] = dicearr[i].value
 	}
 
-	fmt.Println(values)
+	info(fmt.Sprint(values))
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"success": true,
 		"values":  values,

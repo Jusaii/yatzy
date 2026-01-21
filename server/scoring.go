@@ -37,52 +37,68 @@ func itemSelector(c *gin.Context) {
 	case "one":
 		val = calculateNumbers(req.Id, 1)
 		whatInt = 0
+
 	case "two":
 		val = calculateNumbers(req.Id, 2)
 		whatInt = 1
+
 	case "three":
 		val = calculateNumbers(req.Id, 3)
 		whatInt = 2
+
 	case "four":
 		val = calculateNumbers(req.Id, 4)
 		whatInt = 3
+
 	case "five":
 		val = calculateNumbers(req.Id, 5)
 		whatInt = 4
+
 	case "six":
 		val = calculateNumbers(req.Id, 6)
 		whatInt = 5
+
 	case "pair":
+		val = calculatePair(req.Id)
 		whatInt = 6
-		fmt.Println("pair clicked")
+
 	case "doublepair":
+		val = calculateDoublepair(req.Id)
 		whatInt = 7
-		fmt.Println("doublepair clicked")
+
 	case "triples":
+		val = calculateTriples(req.Id)
 		whatInt = 8
-		fmt.Println("triples clicked")
+
 	case "quadruples":
+		val = calculateQuadruples(req.Id)
 		whatInt = 9
-		fmt.Println("quadruples clicked")
+
 	case "smallstraight":
+		val = calculateSmallstraight(req.Id)
 		whatInt = 10
-		fmt.Println("smallstraight clicked")
+
 	case "bigstraight":
+		val = calculateBigstraight(req.Id)
 		whatInt = 11
-		fmt.Println("bigstraight clicked")
+
 	case "fullhouse":
+		val = calculateFullhouse(req.Id)
 		whatInt = 12
-		fmt.Println("fullhouse clicked")
+
 	case "mixed":
+		val = calculateMixed(req.Id)
 		whatInt = 13
-		fmt.Println("mixed clicked")
+
 	case "quintuples":
+		val = calculateQuintuples(req.Id)
 		whatInt = 14
-		fmt.Println("quintuples clicked")
+
 	}
 
 	UserMap[req.Id].scorearray[whatInt] = val
 	resetDice(req.Id)
+	info(fmt.Sprint(UserMap[req.Id].scorearray))
 }
 
 func calculateTotal(id string) int {

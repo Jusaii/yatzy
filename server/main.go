@@ -21,6 +21,10 @@ var (
 	dbname   = os.Getenv("DATABASE_NAME")
 )
 
+func info(msg string) {
+	fmt.Println("[\033[35m INFO \033[0m] ", msg)
+}
+
 // Function to open a connection to the database
 func openDatabase() *sql.DB {
 	psqlInfo := fmt.Sprintf("host=db port=%d user=%s "+
@@ -74,6 +78,6 @@ func main() {
 
 	router.Use(static.Serve("/", static.LocalFile("web/dist", true)))
 
-	fmt.Println("[ INFO ] Server running...")
+	info("Server running...")
 	router.Run("0.0.0.0:2222")
 }
