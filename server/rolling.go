@@ -9,10 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type idStruct struct {
-	Id string `json:"id"`
-}
-
 func rollDice(c *gin.Context) {
 	id := c.Param("id")
 	dicearr := &UserMap[id].diceArray

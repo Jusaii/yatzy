@@ -21,14 +21,6 @@ var (
 	dbname   = os.Getenv("DATABASE_NAME")
 )
 
-// Struct for data in the database
-type UserDataStruct struct {
-	Name  string `json:"name"`
-	Score int    `json:"score"`
-	Id    string `json:"id"`
-	Row   string `json:"row"`
-}
-
 // Function to open a connection to the database
 func openDatabase() *sql.DB {
 	psqlInfo := fmt.Sprintf("host=db port=%d user=%s "+
@@ -44,6 +36,7 @@ func openDatabase() *sql.DB {
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
+	gin.ForceConsoleColor()
 	db = openDatabase()
 	defer db.Close()
 
@@ -74,8 +67,8 @@ func main() {
 	router.POST("/start", startGame)
 	router.POST("/end", endGame)
 	router.POST("/restart", restartGame)
-	router.POST("/updatescores", UpdateScores)
 	router.POST("/lockDice/:dice", lockDice)
+	router.POST("/selectItem/:what", itemSelector)
 
 	router.GET("/rollDice/:id", rollDice)
 

@@ -1,29 +1,12 @@
 package main
 
 import (
-	"net/http"
+	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
-
-type GameData struct {
-	name       string
-	scorearray [15]int
-	diceArray  [5]DiceData
-}
-
-type DiceData struct {
-	value  int
-	locked bool
-}
-
-type NewScoreReq struct {
-	Id     string `json:"id"`
-	Target int    `json:"target"`
-	Value  int    `json:"value"`
-}
 
 var UserMap = map[string]*GameData{}
 
@@ -38,19 +21,68 @@ func InitUser(id string, name string) {
 	UserMap[id] = &newUser
 }
 
-func UpdateScores(c *gin.Context) {
-	var req NewScoreReq
-
+func itemSelector(c *gin.Context) {
+	what := c.Param("what")
+	whatInt := 0
+	var req idStruct
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	UserMap[req.Id].scorearray[req.Target] = req.Value
 
+	val := 0
+
+	switch what {
+	case "one":
+		val = calculateNumbers(req.Id, 1)
+		whatInt = 0
+	case "two":
+		val = calculateNumbers(req.Id, 2)
+		whatInt = 1
+	case "three":
+		val = calculateNumbers(req.Id, 3)
+		whatInt = 2
+	case "four":
+		val = calculateNumbers(req.Id, 4)
+		whatInt = 3
+	case "five":
+		val = calculateNumbers(req.Id, 5)
+		whatInt = 4
+	case "six":
+		val = calculateNumbers(req.Id, 6)
+		whatInt = 5
+	case "pair":
+		whatInt = 6
+		fmt.Println("pair clicked")
+	case "doublepair":
+		whatInt = 7
+		fmt.Println("doublepair clicked")
+	case "triples":
+		whatInt = 8
+		fmt.Println("triples clicked")
+	case "quadruples":
+		whatInt = 9
+		fmt.Println("quadruples clicked")
+	case "smallstraight":
+		whatInt = 10
+		fmt.Println("smallstraight clicked")
+	case "bigstraight":
+		whatInt = 11
+		fmt.Println("bigstraight clicked")
+	case "fullhouse":
+		whatInt = 12
+		fmt.Println("fullhouse clicked")
+	case "mixed":
+		whatInt = 13
+		fmt.Println("mixed clicked")
+	case "quintuples":
+		whatInt = 14
+		fmt.Println("quintuples clicked")
+	}
+
+	UserMap[req.Id].scorearray[whatInt] = val
 	resetDice(req.Id)
-
-	c.IndentedJSON(http.StatusOK, "Game started")
 }
 
 func calculateTotal(id string) int {
