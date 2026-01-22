@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -19,6 +20,20 @@ func InitUser(id string, name string) {
 	}
 
 	UserMap[id] = &newUser
+}
+
+func sendScoresByID(c *gin.Context) {
+	id := c.Param("id")
+
+	scoreRow := UserMap[id].scorearray
+	total, bonus := calculateTotal(id)
+
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"success": true,
+		"scores":  scoreRow,
+		"total":   total,
+		"bonus":   bonus,
+	})
 }
 
 func itemSelector(c *gin.Context) {
@@ -101,15 +116,17 @@ func itemSelector(c *gin.Context) {
 	info(fmt.Sprint(UserMap[req.Id].scorearray))
 }
 
-func calculateTotal(id string) int {
+func calculateTotal(id string) (int, bool) {
 	scoreRow := UserMap[id].scorearray
 	total := 0
+	bonus := false
 	for i := range 6 {
 		total += scoreRow[i]
 	}
 
 	// Check if bonus is given
 	if total >= 63 {
+		bonus = true
 		total += 50
 	}
 
@@ -117,7 +134,7 @@ func calculateTotal(id string) int {
 		total += scoreRow[i]
 	}
 
-	return total
+	return total, bonus
 }
 
 func getScoreRow(id string) string {
