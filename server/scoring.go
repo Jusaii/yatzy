@@ -26,13 +26,13 @@ func sendScoresByID(c *gin.Context) {
 	id := c.Param("id")
 
 	scoreRow := UserMap[id].scorearray
-	total, bonus := calculateTotal(id)
+	total, subTotal := calculateTotal(id)
 
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"success": true,
-		"scores":  scoreRow,
-		"total":   total,
-		"bonus":   bonus,
+		"success":  true,
+		"scores":   scoreRow,
+		"total":    total,
+		"subTotal": subTotal,
 	})
 }
 
@@ -116,25 +116,24 @@ func itemSelector(c *gin.Context) {
 	info(fmt.Sprint(UserMap[req.Id].scorearray))
 }
 
-func calculateTotal(id string) (int, bool) {
+func calculateTotal(id string) (int, int) {
 	scoreRow := UserMap[id].scorearray
 	total := 0
-	bonus := false
+	subTotal := 0
 	for i := range 6 {
 		total += scoreRow[i]
+		subTotal += scoreRow[i]
 	}
 
 	// Check if bonus is given
 	if total >= 63 {
-		bonus = true
 		total += 50
 	}
 
 	for i := 6; i < 15; i++ {
 		total += scoreRow[i]
 	}
-
-	return total, bonus
+	return total, subTotal
 }
 
 func getScoreRow(id string) string {

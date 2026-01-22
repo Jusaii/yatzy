@@ -2,7 +2,8 @@ import { useState } from "react";
 import { makePOSTrequest, makeGETrequest } from "./requests";
 import { getUserKey } from "./userkeys";
 
-
+let total = 0
+let subTotal = 0
 const indexTextToInt = new Map([
     ["one", 0],
     ["two", 1],
@@ -38,6 +39,8 @@ function SelectButton({ position, reset }) {
         makePOSTrequest(`selectItem/${position}`, { id: id })
         const data = await getScores(id)
         setText(data.scores[indexTextToInt.get(position)])
+        total = data.total
+        subTotal = data.subTotal
         reset()
         setClicked(true)
     }
@@ -79,8 +82,8 @@ export function Scoreboard(props) {
             </tbody>
             <tbody className="scoreboard2-container">
                 <tr>
-                    <td>Bonus: 0</td>
-                    <td>Total: 0</td>
+                    <td>Bonus: {subTotal < 63 ? 0 : 50}</td>
+                    <td>Total: {subTotal}</td>
                 </tr>
             </tbody>
             <tbody className="scoreboard3-container">
@@ -124,7 +127,7 @@ export function Scoreboard(props) {
             <tbody className="scoreboard4-container">
                 <tr>
                     <td>{props.name}</td>
-                    <td>0</td>
+                    <td>{total}</td>
                 </tr>
             </tbody>
         </table>

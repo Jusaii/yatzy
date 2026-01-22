@@ -10,25 +10,6 @@ let LBWIDTH = 3
 
 // TODO: Get totals to work visually
 
-// Array indexes for server side score array
-export const perItemIndex = {
-  one: 0,
-  two: 1,
-  three: 2,
-  four: 3,
-  five: 4,
-  six: 5,
-  pair: 6,
-  doublepair: 7,
-  triples: 8,
-  quadruples: 9,
-  smallstraight: 10,
-  bigstraight: 11,
-  fullhouse: 12,
-  mixed: 13,
-  quintuples: 14,
-}
-
 const diceImages = new Map([
   [0, 'dice0'],
   [1, 'dice1'],
@@ -69,8 +50,6 @@ const App = () => {
     setRoundNum(0)
     setShowLb(false)
     setRollCount(0)
-    resetTotal()
-    resetSubTotal()
   }
 
   function endGame() {
